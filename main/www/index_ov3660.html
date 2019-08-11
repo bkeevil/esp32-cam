@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>ESP32 OV3660</title>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
+        <script type="text/javascript" src="script.js"></script>
+    </head>
+    <body>
+        <section class="main">
+            <section id="header">
+                <section id="title">
+                  <h2>ESP32 OV3660</h2>
+                </section>    
+                <section id="buttons">  
+                    <button id="get-still">Capture Still Image</button>
+                    <button id="toggle-stream">Start Stream</button>
+                    <button id="restore-defaults">Restore Defaults</button>
+                    <button id="refresh-settings">Retrieve Settings</button>
+                    <button id="store-settings">Save Settings</button>
+                    <button id="reboot-camera">Reboot Camera</button>                    
+                </section>
+            </section>    
+            <div id="basic-settings-label">
+                <label for="nav-toggle-basic-cb" id="nav-basic-toggle">&#9776;&nbsp;&nbsp;Basic Settings</label>
+            </div>
+            <div id="content">
+                <div id="sidebar">
+                    <input type="checkbox" id="nav-toggle-basic-cb" checked="checked">
+                    <nav id="basic-menu">
+                        <div class="input-group" id="framesize-group">
+                            <label for="framesize">Resolution</label>
+                            <select id="framesize" class="default-action">
+                                <option value="11">QXGA(2048x1564)</option>
+                                <option value="10">UXGA(1600x1200)</option>
+                                <option value="9">SXGA(1280x1024)</option>
+                                <option value="8">XGA(1024x768)</option>
+                                <option value="7">SVGA(800x600)</option>
+                                <option value="6">VGA(640x480)</option>
+                                <option value="5" selected="selected">CIF(400x296)</option>
+                                <option value="4">QVGA(320x240)</option>
+                                <option value="3">HQVGA(240x176)</option>
+                                <option value="0">QQVGA(160x120)</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="quality-group">
+                            <label for="quality">Quality</label>
+                            <div class="range-min">4</div>
+                            <input type="range" id="quality" min="4" max="63" value="10" class="default-action">
+                            <div class="range-max">63</div>
+                        </div>
+                        <div class="input-group" id="brightness-group">
+                            <label for="brightness">Brightness</label>
+                            <div class="range-min">-3</div>
+                            <input type="range" id="brightness" min="-3" max="3" value="0" class="default-action">
+                            <div class="range-max">3</div>
+                        </div>
+                        <div class="input-group" id="contrast-group">
+                            <label for="contrast">Contrast</label>
+                            <div class="range-min">-3</div>
+                            <input type="range" id="contrast" min="-3" max="3" value="0" class="default-action">
+                            <div class="range-max">3</div>
+                        </div>
+                        <div class="input-group" id="saturation-group">
+                            <label for="saturation">Saturation</label>
+                            <div class="range-min">-4</div>
+                            <input type="range" id="saturation" min="-4" max="4" value="0" class="default-action">
+                            <div class="range-max">4</div>
+                        </div>
+                        <div class="input-group" id="sharpness-group">
+                            <label for="sharpness">Sharpness</label>
+                            <div class="range-min">-3</div>
+                            <input type="range" id="sharpness" min="-3" max="3" value="0" class="default-action">
+                            <div class="range-max">3</div>
+                        </div>
+                        <div class="input-group" id="special_effect-group">
+                            <label for="special_effect">Special Effect</label>
+                            <select id="special_effect" class="default-action">
+                                <option value="0" selected="selected">No Effect</option>
+                                <option value="1">Negative</option>
+                                <option value="2">Grayscale</option>
+                                <option value="3">Red Tint</option>
+                                <option value="4">Green Tint</option>
+                                <option value="5">Blue Tint</option>
+                                <option value="6">Sepia</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="hmirror-group">
+                            <label for="hmirror">H-Mirror</label>
+                            <div class="switch">
+                                <input id="hmirror" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="hmirror"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="vflip-group">
+                            <label for="vflip">V-Flip</label>
+                            <div class="switch">
+                                <input id="vflip" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="vflip"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="led-group">
+                            <label for="led_intensity">LED Intensity</label>
+                            <div class="range-min">0</div>
+                            <input type="range" id="led_intensity" min="0" max="255" value="0" class="default-action">
+                            <div class="range-max">255</div>
+                        </div>
+                    </nav>
+                    <div id="network-settings-label">
+                        <label for="nav-toggle-network-cb" id="nav-network-toggle">&#9776;&nbsp;&nbsp;Network Settings</label>
+                    </div>
+                    <input type="checkbox" id="nav-toggle-network-cb" checked="checked">
+                    <nav id="network-menu">
+                        <div class="input-group" id="hostname-group">
+                                <label for="hostname">Hostname</label>
+                                <input type="text" id="hostname" maxsize="32" class="default-action">
+                        </div>
+                        <div class="input-group" id="wifi-ssid-group">
+                            <label for="wifi_ssid">Access Point</label>
+                            <input type="text" id="wifi_ssid" maxsize="64" class="default-action">
+                        </div>
+                        <div class="input-group" id="wifi-password-group">
+                            <label for="wifi_password">Password</label>
+                            <input type="password" id="wifi_password" maxsize="64" class="default-action">
+                        </div>
+                        <div class="input-group" id="dhcp-group">
+                            <label for="dhcp">Use DHCP</label>
+                            <div class="switch">
+                                <input id="dhcp" type="checkbox" class="default-action" class="default-action">
+                                <label class="slider" for="dhcp"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="ip-group">
+                            <label for="ip">IP Address</label>
+                            <input type="text" id="ip" maxsize="15" class="default-action">
+                        </div>
+                        <div class="input-group" id="netmask-group">
+                            <label for="netmask">Netmask</label>
+                            <input type="text" id="netmask" maxsize="15" class="default-action">
+                        </div>
+                        <div class="input-group" id="gateway-group">
+                            <label for="gateway">Gateway</label>
+                            <input type="text" id="gateway" maxsize="15" class="default-action">
+                        </div>
+                        <div class="input-group" id="dns1-group">
+                            <label for="dns1">DNS 1</label>
+                            <input type="text" id="dns1" maxsize="15" class="default-action">
+                        </div>
+                        <div class="input-group" id="dns2-group">
+                            <label for="dns2">DNS 2</label>
+                            <input type="text" id="dns2" maxsize="15" class="default-action">
+                        </div>
+                    </nav>
+                    <div id="advanced-settings-label">
+                        <label for="nav-toggle-adv-cb" id="nav-toggle-adv">&#9776;&nbsp;&nbsp;Advanced Settings</label>
+                    </div>                    
+                    <input type="checkbox" id="nav-toggle-adv-cb">
+                    <nav id="adv-menu">            
+                        <div class="input-group" id="denoise-group">
+                            <label for="denoise">De-Noise</label>
+                            <div class="range-min">Auto</div>
+                            <input type="range" id="denoise" min="0" max="8" value="0" class="default-action">
+                            <div class="range-max">8</div>
+                        </div>
+                        <div class="input-group" id="gainceiling-group">
+                            <label for="gainceiling">Gainceiling</label>
+                            <div class="range-min">0</div>
+                            <input type="range" id="gainceiling" min="0" max="511" value="0" class="default-action">
+                            <div class="range-max">511</div>
+                        </div>
+                        <div class="input-group" id="awb-group">
+                            <label for="awb">AWB Enable</label>
+                            <div class="switch">
+                                <input id="awb" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="awb"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="dcw-group">
+                            <label for="dcw">Advanced AWB</label>
+                            <div class="switch">
+                                <input id="dcw" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="dcw"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="awb_gain-group">
+                            <label for="awb_gain">Manual AWB</label>
+                            <div class="switch">
+                                <input id="awb_gain" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="awb_gain"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="wb_mode-group">
+                            <label for="wb_mode">AWB Mode</label>
+                            <select id="wb_mode" class="default-action">
+                                <option value="0" selected="selected">Auto</option>
+                                <option value="1">Sunny</option>
+                                <option value="2">Cloudy</option>
+                                <option value="3">Office</option>
+                                <option value="4">Home</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="aec-group">
+                            <label for="aec">AEC Enable</label>
+                            <div class="switch">
+                                <input id="aec" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="aec"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="aec_value-group">
+                            <label for="aec_value">Manual Exposure</label>
+                            <div class="range-min">0</div>
+                            <input type="range" id="aec_value" min="0" max="1536" value="320" class="default-action">
+                            <div class="range-max">1536</div>
+                        </div>
+                        <div class="input-group" id="aec2-group">
+                            <label for="aec2">Night Mode</label>
+                            <div class="switch">
+                                <input id="aec2" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="aec2"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="ae_level-group">
+                                <label for="ae_level">Exposure Level</label>
+                                <div class="range-min">-5</div>
+                                <input type="range" id="ae_level" min="-5" max="5" value="0" class="default-action">
+                                <div class="range-max">5</div>
+                        </div>    
+                        <div class="input-group" id="agc-group">
+                            <label for="agc">AGC</label>
+                            <div class="switch">
+                                <input id="agc" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="agc"></label>
+                            </div>
+                        </div>
+                        <div class="input-group hidden" id="agc_gain-group">
+                            <label for="agc_gain">Gain</label>
+                            <div class="range-min">1x</div>
+                            <input type="range" id="agc_gain" min="0" max="64" value="5" class="default-action">
+                            <div class="range-max">64x</div>
+                        </div>
+                        <div class="input-group" id="raw_gma-group">
+                            <label for="raw_gma">GMA Enable</label>
+                            <div class="switch">
+                                <input id="raw_gma" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="raw_gma"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="lenc-group">
+                            <label for="lenc">Lens Correction</label>
+                            <div class="switch">
+                                <input id="lenc" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="lenc"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="bpc-group">
+                            <label for="bpc">BPC</label>
+                            <div class="switch">
+                                <input id="bpc" type="checkbox" class="default-action">
+                                <label class="slider" for="bpc"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="wpc-group">
+                            <label for="wpc">WPC</label>
+                            <div class="switch">
+                                <input id="wpc" type="checkbox" class="default-action" checked="checked">
+                                <label class="slider" for="wpc"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="colorbar-group">
+                            <label for="colorbar">Color Bar</label>
+                            <div class="switch">
+                                <input id="colorbar" type="checkbox" class="default-action">
+                                <label class="slider" for="colorbar"></label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <figure>
+                    <div id="stream-container" class="image-container hidden">
+                        <a id="save-still" href="#" class="button save" download="capture.jpg">Save</a>
+                        <div class="close" id="close-stream">×</div>
+                        <img id="stream" src="" crossorigin>
+                    </div>
+                </figure>
+            </div>
+        </section>
+    </body>
+</html>

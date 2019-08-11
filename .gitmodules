@@ -1,0 +1,9 @@
+[submodule "components/esp32-camera"]
+	path = components/esp32-camera
+	url = git@github.com:bkeevil/esp32-camera.git
+	branch = feature/nvs
+
+[submodule "components/esp-idf-ssd1306"]
+	path = components/esp-idf-ssd1306
+	url = git@github.com:bkeevil/esp-idf-ssd1306.git
+	branch = development
