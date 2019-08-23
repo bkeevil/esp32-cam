@@ -2,25 +2,111 @@ document.addEventListener('DOMContentLoaded', function (event) {
   var baseHost = document.location.origin
   var streamUrl = baseHost + ':81'
 
-  const hide = el => {
+  const framesize = document.getElementById('framesize')
+  const ledGroup = document.getElementById('led-group')
+  const awb = document.getElementById('awb_gain')
+  const wb = document.getElementById('wb_mode-group')
+  const agc = document.getElementById('agc')
+  const agcGain = document.getElementById('agc_gain-group')
+  const gainCeiling = document.getElementById('gainceiling-group') // Not for 3660
+  const aec = document.getElementById('aec')
+  const exposure = document.getElementById('aec_value-group')
+  const dhcp = document.getElementById('dhcp')
+  const ip = document.getElementById('ip-group')
+  const netmask = document.getElementById('netmask-group')
+  const gateway = document.getElementById('gateway-group')
+  const dns1 = document.getElementById('dns1-group')
+  const dns2 = document.getElementById('dns2-group')
+  const restoreButton = document.getElementById('restore-defaults')
+  const rebootButton = document.getElementById('reboot-camera')
+  const storeButton = document.getElementById('store-settings')
+  const refreshButton = document.getElementById('refresh-settings')
+  const streamButton = document.getElementById('toggle-stream')
+  const stillButton = document.getElementById('get-still')
+  const screenshotButton = document.getElementById('get-screenshot')
+  const view = document.getElementById('stream')
+  const viewContainer = document.getElementById('stream-container')
+  
+  function hide(el) {
     el.classList.add('hidden')
   }
   
-  const show = el => {
+  function show(el) {
     el.classList.remove('hidden')
   }
 
-  const disable = el => {
+  function disable(el) {
     el.classList.add('disabled')
     el.disabled = true
   }
 
-  const enable = el => {
+  function enable(el) {
     el.classList.remove('disabled')
     el.disabled = false
   }
 
-  const updateValue = (el, value, updateRemote) => {
+  function stopStream() {
+    window.stop();
+    streamButton.innerHTML = 'Start Stream'
+  }
+
+  function startStream() {
+    view.src = `${streamUrl}/stream`
+    show(viewContainer)
+    streamButton.innerHTML = 'Stop Stream'
+  }
+
+  function rebootCamera() {
+    const query = `${baseHost}/reboot`
+    fetch(query)
+      .then(response => {
+         console.log(`request to ${query} finished, status: ${response.status}`)
+         if (response.status == 200) 
+           alert("Camera is restarting")
+      })    
+  }
+
+  function storeSettings() {
+    const query = `${baseHost}/store`
+    fetch(query)
+      .then(response => {
+         console.log(`request to ${query} finished, status: ${response.status}`)
+         if (response.status != 200) 
+           alert("Failed to store camera settings. Is the camera connected?")
+      })
+  }
+
+  function fetchSettings() {
+    fetch(`${baseHost}/status`)
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (state) {
+        console.log(state);
+        document
+          .querySelectorAll('.default-action')
+          .forEach(el => {
+            updateValue(el, state[el.id], false)
+          })
+        document.title = state.hostname
+        var pageTitle = document.getElementById("page-title")
+        if (pageTitle) {
+          pageTitle.innerHTML = state.hostname
+        }
+      })
+  }
+
+  function resetDefaults() {
+    const query = `${baseHost}/reset`
+    fetch(query)
+      .then(response => {
+         console.log(`request to ${query} finished, status: ${response.status}`)
+         if (response.status != 200) 
+           alert("Failed to reset the camera to firmware defaults. Is the camera connected?")
+      })
+  }
+
+  function updateValue(el, value, updateRemote) {
     updateRemote = updateRemote == null ? true : updateRemote
     let initialValue
     if (el.type === 'checkbox') {
@@ -51,14 +137,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
         value > -1 ? show(ledGroup) : hide(ledGroup)
       } else if(el.id == "dhcp"){
         if (value) {
-          console.log("using dhcp")
           hide(ip)
           hide(netmask)
           hide(gateway)
           hide(dns1)
           hide(dns2)
         } else {
-          console.log("using static")
           show(ip)
           show(netmask)
           show(gateway)
@@ -97,91 +181,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
       })
   }
 
-  document
-    .querySelectorAll('.close')
-    .forEach(el => {
-      el.onclick = () => {
-        hide(el.parentNode)
-      }
-    })
-
-  fetchSettings();
-
-  const view = document.getElementById('stream')
-  const viewContainer = document.getElementById('stream-container')
-  const restoreButton = document.getElementById('restore-defaults')
-  const rebootButton = document.getElementById('reboot-camera')
-  const stillButton = document.getElementById('get-still')
-  const storeButton = document.getElementById('store-settings')
-  const refreshButton = document.getElementById('refresh-settings')
-  const streamButton = document.getElementById('toggle-stream')
-  const closeButton = document.getElementById('close-stream')
-  const saveButton = document.getElementById('save-still')
-  const ledGroup = document.getElementById('led-group')
-
-  const stopStream = () => {
-    window.stop();
-    streamButton.innerHTML = 'Start Stream'
-  }
-
-  const startStream = () => {
-    view.src = `${streamUrl}/stream`
-    show(viewContainer)
-    streamButton.innerHTML = 'Stop Stream'
-  }
-
-  function rebootCamera() {
-    const query = `${baseHost}/reboot`
-    fetch(query)
-      .then(response => {
-         console.log(`request to ${query} finished, status: ${response.status}`)
-         if (response.status == 200) 
-           alert("Camera is restarting")
-      })    
-  }
-
-  function storeSettings() {
-    const query = `${baseHost}/store`
-    fetch(query)
-      .then(response => {
-         console.log(`request to ${query} finished, status: ${response.status}`)
-         if (response.status != 200) 
-           alert("Failed to store camera settings. Is the camera connected?")
-      })
-  }
-
-  // read initial values
-  function fetchSettings() {
-    fetch(`${baseHost}/status`)
-      .then(function (response) {
-        return response.json()
-      })
-      .then(function (state) {
-        console.log(state);
-        document
-          .querySelectorAll('.default-action')
-          .forEach(el => {
-            updateValue(el, state[el.id], false)
-          })
-        document.title = state.hostname
-        var pageTitle = document.getElementById("page-title")
-        if (pageTitle) {
-          pageTitle.innerHTML = state.hostname
-        }
-      })
-  }
-
-  function resetDefaults() {
-    const query = `${baseHost}/reset`
-    fetch(query)
-      .then(response => {
-         console.log(`request to ${query} finished, status: ${response.status}`)
-         if (response.status != 200) 
-           alert("Failed to reset the camera to firmware defaults. Is the camera connected?")
-      })
-  }
-
   // Attach actions to buttons
+
   restoreButton.onclick = () => {
     if (confirm("Are you sure you want to restore default settings?")) {
       stopStream()
@@ -199,23 +200,18 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
 
-  stillButton.onclick = () => {
-    stopStream()
-    view.src = `${baseHost}/capture?_cb=${Date.now()}`
-    show(viewContainer)
-  }
-
-  closeButton.onclick = () => {
-    stopStream()
-    hide(viewContainer)
-  }
-
   storeButton.onclick = () => {
     storeSettings();
   }
 
   refreshButton.onclick = () => {
     fetchSettings();
+  }
+
+  stillButton.onclick = () => {
+    stopStream()
+    view.src = `${baseHost}/capture?_cb=${Date.now()}`
+    show(viewContainer)
   }
 
   streamButton.onclick = () => {
@@ -227,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
 
-  saveButton.onclick = () => {
+  screenshotButton.onclick = () => {
     var canvas = document.createElement("canvas");
     canvas.width = view.width;
     canvas.height = view.height;
@@ -247,17 +243,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
   // Attach default on change action
   document
-    .querySelectorAll('.default-action')
-    .forEach(el => {
-      el.onchange = () => updateConfig(el)
-    })
-
-  // Custom actions
-
-  // Gain
-  const agc = document.getElementById('agc')
-  const agcGain = document.getElementById('agc_gain-group')
-  const gainCeiling = document.getElementById('gainceiling-group') // Not for 3660
+  .querySelectorAll('.default-action')
+  .forEach(el => {
+    el.onchange = () => updateConfig(el)
+  })
   
   agc.onchange = () => {
     updateConfig(agc)
@@ -270,39 +259,21 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
 
-  // Exposure
-  const aec = document.getElementById('aec')
-  const exposure = document.getElementById('aec_value-group')
   aec.onchange = () => {
     updateConfig(aec)
     aec.checked ? hide(exposure) : show(exposure)
   }
 
-  // AWB
-  const awb = document.getElementById('awb_gain')
-  const wb = document.getElementById('wb_mode-group')
   awb.onchange = () => {
     updateConfig(awb)
     awb.checked ? show(wb) : hide(wb)
   }
-
-  // framesize
-  const framesize = document.getElementById('framesize')
-
+  
   framesize.onchange = () => {
     updateConfig(framesize)
   }
 
-  // network
-  const dhcp = document.getElementById('dhcp')
-  const ip = document.getElementById('ip-group')
-  const netmask = document.getElementById('netmask-group')
-  const gateway = document.getElementById('gateway-group')
-  const dns1 = document.getElementById('dns1-group')
-  const dns2 = document.getElementById('dns2-group')
-
   dhcp.onchange = () => {
-      console.log("dhcp.onchange")
       if (dhcp.checked) {
           hide(ip)
           hide(netmask)
@@ -318,6 +289,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
       }
   }
 
-  startStream()
+  document
+    .querySelectorAll('.close')
+    .forEach(el => {
+      el.onclick = () => {
+        hide(el.parentNode)
+      }
+    })
 
+  fetchSettings();
+  startStream()
 })

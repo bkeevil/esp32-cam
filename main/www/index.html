@@ -8,27 +8,24 @@
         <script type="text/javascript" src="script.js"></script>
     </head>
     <body>
-        <section class="main">
+        <section id="main">
             <section id="header">
-                <section id="title">
-                  <h2 id="page-title">ESP32-Camera</h2>
-                </section>    
-                <section id="buttons">  
+                <h2 id="page-title">ESP32-Camera</h2>
+                <nav id="maintoolbar">  
+                    <button id="get-screenshot">Grab Frame</button>
                     <button id="get-still">Capture Still Image</button>
-                    <button id="toggle-stream">Start Stream</button>
-                    <button id="restore-defaults">Restore Defaults</button>
-                    <button id="refresh-settings">Retrieve Settings</button>
-                    <button id="store-settings">Save Settings</button>
-                    <button id="reboot-camera">Reboot Camera</button>                    
+                    <button id="toggle-stream">Start Stream</button>                    
                 </section>
             </section>    
-            <div id="basic-settings-label">
-                <label for="nav-toggle-basic-cb" id="nav-basic-toggle">&#9776;&nbsp;&nbsp;Basic Settings</label>
-            </div>
-            <div id="content">
-                <div id="sidebar">
-                    <input type="checkbox" id="nav-toggle-basic-cb" checked="checked">
-                    <nav id="basic-menu">
+            <section id="content">
+                <section id="sidebar">
+                    
+                    <!-- Basic Settings Menu -->
+                    <div id="basic-settings-label">
+                        <label for="nav-toggle-basic-cb" class="nav-toggle">&#9776;&nbsp;&nbsp;Basic Settings</label>
+                    </div>
+                    <input type="checkbox" id="nav-toggle-basic-cb" class="nav-toggle-cb" checked="checked">
+                    <nav id="basic-menu" class="menu">
                         <div class="input-group" id="framesize-group">
                             <label for="framesize">Resolution</label>
                             <select id="framesize" class="default-action">  
@@ -100,11 +97,13 @@
                           <div class="range-max">255</div>
                         </div>
                     </nav>
+
+                    <!-- Network Settings Menu-->
                     <div id="network-settings-label">
-                        <label for="nav-toggle-network-cb" id="nav-network-toggle">&#9776;&nbsp;&nbsp;Network Settings</label>
+                        <label for="nav-toggle-network-cb" class=nav-toggle">&#9776;&nbsp;&nbsp;Network Settings</label>
                     </div>
-                    <input type="checkbox" id="nav-toggle-network-cb" checked="checked">
-                    <nav id="network-menu">
+                    <input type="checkbox" id="nav-toggle-network-cb" class="nav-toggle-cb" checked="checked">
+                    <nav id="network-menu" class="menu">
                         <div class="input-group" id="hostname-group">
                                 <label for="hostname">Hostname</label>
                                 <input type="text" id="hostname" maxsize="32" class="default-action">
@@ -145,11 +144,13 @@
                             <input type="text" id="dns2" maxsize="15" class="default-action">
                         </div>      
                     </nav>        
+
+                    <!-- Advanced Settings Menu -->
                     <div id="advanced-settings-label">
-                        <label for="nav-toggle-adv-cb" id="nav-toggle-adv">&#9776;&nbsp;&nbsp;Advanced Settings</label>
+                        <label for="nav-toggle-adv-cb" class="nav-toggle">&#9776;&nbsp;&nbsp;Advanced Settings</label>
                     </div>                    
-                    <input type="checkbox" id="nav-toggle-adv-cb">
-                    <nav id="adv-menu">
+                    <input type="checkbox" id="nav-toggle-adv-cb" class="nav-toggle-cb">
+                    <nav id="adv-menu" class="menu">
                         <div class="input-group" id="awb-group">
                             <label for="awb">AWB Enable</label>
                             <div class="switch">
@@ -234,15 +235,22 @@
                             </div>
                         </div>
                     </nav>
-                </div>
+
+                    <!-- Bottom Buttons -->
+                    <nav id="sidetoolbar">
+                      <button id="restore-defaults">Restore Defaults</button>
+                      <button id="refresh-settings">Retrieve Settings</button>
+                      <button id="store-settings">Save Settings</button>
+                      <button id="reboot-camera">Reboot Camera</button>
+                    </nav>  
+
+                </section> <!-- sidebar -->
                 <figure>
                     <div id="stream-container" class="image-container hidden">
-                        <a id="save-still" href="#" class="button save" download="capture.jpg">Save</a>
-                        <div class="close" id="close-stream">×</div>
                         <img id="stream" src="" crossorigin>
                     </div>
                 </figure>
-            </div>
+            </section> <!-- content -->
         </section>
     </body>
 </html>
