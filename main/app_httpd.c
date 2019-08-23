@@ -330,7 +330,6 @@ static esp_err_t status_handler(httpd_req_t *req){
     char * p = json_response;
     *p++ = '{';
 
-    p+=sprintf(p, "\"sensorid\":%u,", s->id.PID);
     p+=sprintf(p, "\"framesize\":%u,", s->status.framesize);
     p+=sprintf(p, "\"quality\":%u,", s->status.quality);
     p+=sprintf(p, "\"brightness\":%d,", s->status.brightness);
@@ -398,27 +397,13 @@ static esp_err_t script_handler(httpd_req_t *req){
 }
 
 static esp_err_t index_handler(httpd_req_t *req){
-    extern const unsigned char index_ov2640_html_gz_start[] asm("_binary_index_ov2640_html_gz_start");
-    extern const unsigned char index_ov2640_html_gz_end[]   asm("_binary_index_ov2640_html_gz_end");
-    size_t index_ov2640_html_gz_len = index_ov2640_html_gz_end - index_ov2640_html_gz_start;
-
-    extern const unsigned char index_ov3660_html_gz_start[] asm("_binary_index_ov3660_html_gz_start");
-    extern const unsigned char index_ov3660_html_gz_end[]   asm("_binary_index_ov3660_html_gz_end");
-    size_t index_ov3660_html_gz_len = index_ov3660_html_gz_end - index_ov3660_html_gz_start;
+    extern const unsigned char index_html_gz_start[] asm("_binary_index_html_gz_start");
+    extern const unsigned char index_html_gz_end[]   asm("_binary_index_html_gz_end");
+    size_t index_html_gz_len = index_html_gz_end - index_html_gz_start;
 
     httpd_resp_set_type(req, "text/html");
     httpd_resp_set_hdr(req, "Content-Encoding", "gzip");
-    sensor_t * s = esp_camera_sensor_get();
-    if (s != NULL) {
-        if (s->id.PID == OV3660_PID) {
-            return httpd_resp_send(req, (const char *)index_ov3660_html_gz_start, index_ov3660_html_gz_len);
-        } else {
-            return httpd_resp_send(req, (const char *)index_ov2640_html_gz_start, index_ov2640_html_gz_len);
-        }
-    } else {
-        ESP_LOGE(TAG,"Camera sensor not found");
-        return httpd_resp_send_500(req);
-    }
+    return httpd_resp_send(req, (const char *)index_html_gz_start, index_html_gz_len);
 }
 
 void app_httpd_startup(){

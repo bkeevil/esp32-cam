@@ -163,6 +163,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
           .forEach(el => {
             updateValue(el, state[el.id], false)
           })
+        document.title = state.hostname
+        var pageTitle = document.getElementById("page-title")
+        if (pageTitle) {
+          pageTitle.innerHTML = state.hostname
+        }
       })
   }
 
@@ -312,4 +317,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
           show(dns2)
       }
   }
+
+  startStream()
+
 })
