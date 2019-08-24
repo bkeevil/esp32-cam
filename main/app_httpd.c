@@ -486,8 +486,8 @@ void app_httpd_startup(){
         httpd_register_uri_handler(camera_httpd, &cmd_uri);
         httpd_register_uri_handler(camera_httpd, &store_uri);
         httpd_register_uri_handler(camera_httpd, &status_uri);
-        //httpd_register_uri_handler(camera_httpd, &capture_uri);
-        httpd_register_uri_handler(camera_httpd, &reboot_uri);
+        httpd_register_uri_handler(camera_httpd, &capture_uri);
+        //httpd_register_uri_handler(camera_httpd, &reboot_uri);
         httpd_register_uri_handler(camera_httpd, &reset_uri);
         httpd_register_uri_handler(camera_httpd, &stylesheet_uri);
         httpd_register_uri_handler(camera_httpd, &script_uri);
