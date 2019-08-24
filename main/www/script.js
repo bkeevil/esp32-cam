@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const dns1 = document.getElementById('dns1-group')
   const dns2 = document.getElementById('dns2-group')
   const restoreButton = document.getElementById('restore-defaults')
-  const rebootButton = document.getElementById('reboot-camera')
+  //const rebootButton = document.getElementById('reboot-camera')
   const storeButton = document.getElementById('store-settings')
   const refreshButton = document.getElementById('refresh-settings')
   const streamButton = document.getElementById('toggle-stream')
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     streamButton.innerHTML = 'Stop Stream'
   }
 
-  function rebootCamera() {
+  /*function rebootCamera() {
     const query = `${baseHost}/reboot`
     fetch(query)
       .then(response => {
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
          if (response.status == 200) 
            alert("Camera is restarting")
       })    
-  }
+  }*/
 
   function storeSettings() {
     const query = `${baseHost}/store`
@@ -188,17 +188,17 @@ document.addEventListener('DOMContentLoaded', function (event) {
       stopStream()
       hide(viewContainer)
       resetDefaults()
-      rebootCamera()
+      //rebootCamera()
     }
   }
 
-  rebootButton.onclick = () => {
+  /*rebootButton.onclick = () => {
     if (confirm("Are you sure you want to reboot the camera?")) {
       stopStream()
       hide(viewContainer)
       rebootCamera()
     }
-  }
+  }*/
 
   storeButton.onclick = () => {
     storeSettings();
