@@ -119,7 +119,8 @@ figure img {
 
 #nav-toggle-basic-cb:checked+#basic-menu,
 #nav-toggle-network-cb:checked+#network-menu,
-#nav-toggle-adv-cb:checked+#adv-menu {
+#nav-toggle-adv-cb:checked+#adv-menu,
+#nav-toggle-sidetoolbar-cb:checked+#sidetoolbar {
   display: flex
 }
 
