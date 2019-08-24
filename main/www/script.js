@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const refreshButton = document.getElementById('refresh-settings')
   const streamButton = document.getElementById('toggle-stream')
   const stillButton = document.getElementById('get-still')
-  const screenshotButton = document.getElementById('get-screenshot')
   const view = document.getElementById('stream')
   const viewContainer = document.getElementById('stream-container')
   
@@ -51,7 +50,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
   }
 
   function startStream() {
+    console.log("Starting Stream")
     view.src = `${streamUrl}/stream`
+    show(view)
     show(viewContainer)
     streamButton.innerHTML = 'Stop Stream'
   }
@@ -82,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
         return response.json()
       })
       .then(function (state) {
-        console.log(state);
         document
           .querySelectorAll('.default-action')
           .forEach(el => {
@@ -221,24 +221,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
     } else {
       startStream()
     }
-  }
-
-  screenshotButton.onclick = () => {
-    var canvas = document.createElement("canvas");
-    canvas.width = view.width;
-    canvas.height = view.height;
-    document.body.appendChild(canvas);
-    var context = canvas.getContext('2d');
-    context.drawImage(view,0,0);
-    try {
-      var dataURL = canvas.toDataURL('image/jpeg');
-      saveButton.href = dataURL;
-      var d = new Date();
-      saveButton.download = d.getFullYear() + ("0"+(d.getMonth()+1)).slice(-2) + ("0" + d.getDate()).slice(-2) + ("0" + d.getHours()).slice(-2) + ("0" + d.getMinutes()).slice(-2) + ("0" + d.getSeconds()).slice(-2) + ".jpg";
-    } catch (e) {
-      console.error(e);
-    }
-    canvas.parentNode.removeChild(canvas);
   }
 
   // Attach default on change action
