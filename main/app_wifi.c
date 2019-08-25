@@ -184,7 +184,7 @@ void app_wifi_startup(EventGroupHandle_t event_group) {
     tcpip_adapter_init();
     tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA,settings.hostname);
     tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_AP,settings.hostname);
-    if (!settings.useDHCP) {
+    if (!settings.dhcp) {
       tcpip_adapter_dhcpc_stop(TCPIP_ADAPTER_IF_STA);
       tcpip_adapter_ip_info_t info;
       info.ip.addr = settings.ip.addr;
