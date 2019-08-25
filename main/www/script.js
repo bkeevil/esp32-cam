@@ -235,6 +235,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
   streamButton.onerror = () => {
     window.stop()
     streamButton.innerHTML = 'Start Stream'
+    hide(view)
+    hide(viewContainer)
   }
   
   // Attach default on change action
