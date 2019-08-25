@@ -69,6 +69,14 @@ git clone --recursive https://github.com/bkeevil/esp-cam.git
 cd esp-cam
 ```  
 
+Compress the stylesheet, html and javascript pages in main/www
+
+```
+cd main/www
+./compress_pages.sh
+cd ../..
+```
+
 From the root of the repository source tree, create a build directory and then run CMake:
 
 ```
