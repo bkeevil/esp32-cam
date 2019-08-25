@@ -2,6 +2,8 @@
 
 The goal of this project is to create a functional webcam firmware for ESP32 based camera boards with OV2640 modules using the ESP-IDF framework. Such modules often come with optional components like high power LED "flash", an OLED display, or a motion detector. This project aims to providing a source tree that integrates optinal drivers that implment such functionality.
 
+![Screenshot Image](/images/screenshot.png "Screenshot")
+
 This project was originally forked from one of the example programs for the ESP-WHO face recognition framework by Espressif. The face detection and recognition code has been removed to provide more resources for other features and to eliminate a dependency on external SPI RAM. In its place I have added:
 
 * An improved web interface
