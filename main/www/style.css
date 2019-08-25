@@ -105,23 +105,27 @@ figure img {
   }
 }
 
+.settings-label {
+  height: 36px;
+}
+
 .nav-toggle {
   cursor: pointer;
-  display: block
+  display: block;
 }
 
 .nav-toggle-cb {
+  height: 12px;
+  display: none;
   outline: 0;
   opacity: 0;
   width: 0;
-  height: 0
 }
 
 #nav-toggle-basic-cb:checked+#basic-menu,
 #nav-toggle-network-cb:checked+#network-menu,
-#nav-toggle-adv-cb:checked+#adv-menu,
-#nav-toggle-sidetoolbar-cb:checked+#sidetoolbar {
-  display: flex
+#nav-toggle-adv-cb:checked+#adv-menu {
+  display: flex;
 }
 
 .input-group {
