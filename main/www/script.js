@@ -18,14 +18,15 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const dns1 = document.getElementById('dns1-group')
   const dns2 = document.getElementById('dns2-group')
   const restoreButton = document.getElementById('restore-defaults')
-  //const rebootButton = document.getElementById('reboot-camera')
+  const rebootButton = document.getElementById('reboot-camera')
   const storeButton = document.getElementById('store-settings')
   const refreshButton = document.getElementById('refresh-settings')
   const streamButton = document.getElementById('toggle-stream')
   const stillButton = document.getElementById('get-still')
   const view = document.getElementById('stream')
   const viewContainer = document.getElementById('stream-container')
-  
+  const streamWindowLink = document.getElementById('stream-window-link')
+
   function hide(el) {
     el.classList.add('hidden')
   }
@@ -57,15 +58,16 @@ document.addEventListener('DOMContentLoaded', function (event) {
     streamButton.innerHTML = 'Stop Stream'
   }
 
-  /*function rebootCamera() {
+  function rebootCamera() {
     const query = `${baseHost}/reboot`
     fetch(query)
       .then(response => {
          console.log(`request to ${query} finished, status: ${response.status}`)
          if (response.status == 200) 
-           alert("Camera is restarting")
+            //Reload the page and ignore the browser cache.
+            window.location.reload(true);
       })    
-  }*/
+  }
 
   function storeSettings() {
     const query = `${baseHost}/store`
@@ -192,13 +194,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
 
-  /*rebootButton.onclick = () => {
+  rebootButton.onclick = () => {
     if (confirm("Are you sure you want to reboot the camera?")) {
       stopStream()
       hide(viewContainer)
       rebootCamera()
     }
-  }*/
+  }
 
   storeButton.onclick = () => {
     storeSettings();
@@ -279,6 +281,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
       }
     })
 
-  fetchSettings();
+  streamWindowLink.href = streamUrl
+  fetchSettings()
   startStream()
 })
