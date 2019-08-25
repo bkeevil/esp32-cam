@@ -1,6 +1,6 @@
 # ESP32-CAM
 
-The goal of this project is to create a functional webcam firmware for ESP32 based camera boards with OV2640 modules using the ESP-IDF framework. Such modules often come with optional components like high power LED "flash", an OLED display, or a motion detector.
+The goal of this project is to create a functional webcam firmware for ESP32 based camera boards with OV2640 modules using the ESP-IDF framework. Such modules often come with optional components like high power LED "flash", an OLED display, or a motion detector. This project will incorporate compile time support for optional libraries to support these components.
 
 ![Screenshot Image](/images/screenshot.png "Screenshot")
 
@@ -9,16 +9,17 @@ This project was originally forked from one of the example programs for the ESP-
 * An improved web interface
 * The ability to modify wifi and network settings from the web interface
 * Persistent storage of camera and other settings in NVS
-* An SSD1306 display driver that outputs pertinent information about the wifi connection and frame rate
+* An SSD1306 display driver and code to outputs pertinent information about the wifi connection and frame rate
 * An LED Illuminator driver to control the intensity of an LED flash
 
 The current roadmap involves finishing testing of the features above and creating an initial release before moving on to some planned additions:
 
 * An mDNS server to announce camera services to the local network
 * A basic font library for the lcd and image overlays
+* Playback of image on LCD screen
 * A basic motion detection library
-* An NTP server for date/time overlays
-* SD card drivers for recording and playback
+* Implement an RTC/NTP client for date/time overlays
+* Record and playback from an SD card
 
 The resources available on the ESP32 to support cameras are very limited and users should not expect to see anything like the full resolutions and frame rates the OV2640 is capable of.
 
