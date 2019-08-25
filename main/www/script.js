@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
       }
     })
 
-    streamWindowLink.href = `${streamUrl}/stream`
+  streamWindowLink.href = `${streamUrl}/stream`
   fetchSettings()
   startStream()
 })
