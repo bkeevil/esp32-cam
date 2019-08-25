@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const wb = document.getElementById('wb_mode-group')
   const agc = document.getElementById('agc')
   const agcGain = document.getElementById('agc_gain-group')
-  const gainCeiling = document.getElementById('gainceiling-group') // Not for 3660
+  const gainCeiling = document.getElementById('gainceiling-group')
   const aec = document.getElementById('aec')
   const exposure = document.getElementById('aec_value-group')
   const dhcp = document.getElementById('dhcp')
@@ -125,10 +125,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
         value ? hide(exposure) : show(exposure)
       } else if(el.id === "agc"){
         if (value) {
-          show(gainCeiling) // Not for OV3660
+          show(gainCeiling)
           hide(agcGain)
         } else {
-          hide(gainCeiling) // Not for OV3660
+          hide(gainCeiling)
           show(agcGain)
         }
       } else if(el.id === "awb_gain"){
@@ -233,10 +233,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
   agc.onchange = () => {
     updateConfig(agc)
     if (agc.checked) {
-      show(gainCeiling)  // Not for 3660
+      show(gainCeiling)
       hide(agcGain)
     } else {
-      hide(gainCeiling)  // Not for 3660
+      hide(gainCeiling)
       show(agcGain)
     }
   }
