@@ -316,7 +316,7 @@ static esp_err_t reboot_handler(httpd_req_t *req) {
     esp_err_t ret = httpd_resp_send(req, NULL, 0);
     vTaskDelay(250 / portTICK_PERIOD_MS); // Short delay to ensure the http response is sent
     esp_restart();
-    return ret; // Does not get called 
+    return ret;
 }
 
 static esp_err_t reset_handler(httpd_req_t *req) {
@@ -410,6 +410,7 @@ static esp_err_t index_handler(httpd_req_t *req){
 
 void app_httpd_startup(){
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+    config.max_uri_handlers = 10;
 
     httpd_uri_t index_uri = {
         .uri       = "/",
@@ -489,7 +490,7 @@ void app_httpd_startup(){
         httpd_register_uri_handler(camera_httpd, &store_uri);
         httpd_register_uri_handler(camera_httpd, &status_uri);
         httpd_register_uri_handler(camera_httpd, &capture_uri);
-        //httpd_register_uri_handler(camera_httpd, &reboot_uri);
+        httpd_register_uri_handler(camera_httpd, &reboot_uri);
         httpd_register_uri_handler(camera_httpd, &reset_uri);
         httpd_register_uri_handler(camera_httpd, &stylesheet_uri);
         httpd_register_uri_handler(camera_httpd, &script_uri);
