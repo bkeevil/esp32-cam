@@ -232,6 +232,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
 
+  streamButton.onerror = () => {
+    window.stop()
+    streamButton.innerHTML = 'Start Stream'
+  }
+  
   // Attach default on change action
   document
   .querySelectorAll('.default-action')
