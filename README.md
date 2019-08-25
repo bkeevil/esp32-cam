@@ -1,6 +1,6 @@
 # ESP32-CAM
 
-The goal of this project is to create a functional webcam firmware for ESP32 based camera boards with OV2640 modules using the ESP-IDF framework. Such modules often come with optional components like high power LED "flash", an OLED display, or a motion detector. This project aims to providing a source tree that integrates optinal drivers that implment such functionality.
+The goal of this project is to create a functional webcam firmware for ESP32 based camera boards with OV2640 modules using the ESP-IDF framework. Such modules often come with optional components like high power LED "flash", an OLED display, or a motion detector.
 
 ![Screenshot Image](/images/screenshot.png "Screenshot")
 
