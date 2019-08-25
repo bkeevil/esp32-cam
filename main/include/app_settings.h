@@ -13,7 +13,7 @@ struct app_settings_t {
   char wifi_ssid[LEN_WIFI_SSID];
   char wifi_password[LEN_WIFI_PASSWORD];
   char hostname[LEN_HOSTNAME];
-  bool useDHCP;
+  bool dhcp;
   ip4_addr_t ip;
   ip4_addr_t netmask;
   ip4_addr_t gateway;
