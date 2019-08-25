@@ -65,9 +65,9 @@ void app_camera_startup() {
   config.pin_reset    = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG;
-  config.frame_size   = FRAMESIZE_CIF;
-  config.jpeg_quality = 14;
-  config.fb_count     = 3;
+  config.frame_size   = FRAMESIZE_UXGA;
+  config.jpeg_quality = 16;
+  config.fb_count     = 2;
 
   esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {
@@ -76,6 +76,7 @@ void app_camera_startup() {
   }
 
   app_camera_reset_defaults();
+  esp_camera_load_from_nvs("camera");
 }
 
 void app_camera_shutdown() {

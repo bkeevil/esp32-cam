@@ -308,6 +308,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
 
 static esp_err_t store_handler(httpd_req_t *req) {
     app_settings_save();
+    esp_camera_save_to_nvs("camera");    
     return httpd_resp_send(req, NULL, 0);
 }
 
@@ -320,6 +321,7 @@ static esp_err_t reboot_handler(httpd_req_t *req) {
 
 static esp_err_t reset_handler(httpd_req_t *req) {
     app_settings_reset();
+    esp_camera_load_from_nvs("camera");
     return httpd_resp_send(req, NULL, 0);
 }
 
