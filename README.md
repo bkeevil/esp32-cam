@@ -16,9 +16,10 @@ The current roadmap involves finishing testing of the features above and creatin
 
 * An mDNS server to announce camera services to the local network
 * A basic font library for the lcd and image overlays
+* Playback of image on LCD screen
 * A basic motion detection library
-* An NTP server for date/time overlays
-* SD card drivers for recording and playback
+* Implement an RTC/NTP client for date/time overlays
+* Record and playback from an SD card
 
 The resources available on the ESP32 to support cameras are very limited and users should not expect to see anything like the full resolutions and frame rates the OV2640 is capable of.
 
