@@ -225,6 +225,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
 
+  streamWindowLink.onclick = () => {
+    const streamEnabled = streamButton.innerHTML === 'Stop Stream'
+    if (streamEnabled) {
+      stopStream()
+    }
+  }
+
   // Attach default on change action
   document
   .querySelectorAll('.default-action')
