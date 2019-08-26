@@ -11,10 +11,10 @@ This project was originally forked from one of the example programs for the ESP-
 * Persistent storage of camera and other settings in NVS
 * An SSD1306 display driver and code to outputs pertinent information about the wifi connection and frame rate
 * An LED Illuminator driver to control the intensity of an LED flash
+* An mDNS server to announce camera services to the local network
 
 The current roadmap involves finishing testing of the features above and creating an initial release before moving on to some planned additions:
 
-* An mDNS server to announce camera services to the local network
 * A basic font library for the lcd and image overlays
 * Playback of image on LCD screen
 * A basic motion detection library
