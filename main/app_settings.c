@@ -42,8 +42,10 @@ void app_settings_reset() {
   strncpy(settings.wifi_ssid,CONFIG_ESP_WIFI_SSID,LEN_WIFI_SSID );
   strncpy(settings.wifi_password,CONFIG_ESP_WIFI_PASSWORD,LEN_WIFI_PASSWORD);
   strncpy(settings.hostname,CONFIG_LWIP_LOCAL_HOSTNAME,LEN_HOSTNAME);
+  #ifdef CONFIG_MDNS_ENABLED
   strncpy(settings.mdns_instance,CONFIG_MDNS_INSTANCE,LEN_MDNS_INSTANCE);
   settings.mdns = CONFIG_MDNS_ENABLED;
+  #endif
   settings.dhcp = true;  
 }
 
