@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const gainCeiling = document.getElementById('gainceiling-group')
   const aec = document.getElementById('aec')
   const exposure = document.getElementById('aec_value-group')
+  const mdns = document.getElementById('mdns')
+  const mdns_instance = document.getElementById('mdns-instance-group')
   const dhcp = document.getElementById('dhcp')
   const ip = document.getElementById('ip-group')
   const netmask = document.getElementById('netmask-group')
@@ -271,6 +273,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
     updateConfig(framesize)
   }
 
+  mdns.onchange = () => {
+    if (mdns.checked) {
+      show(mdns_instance)
+    } else {
+      hide(mdns_instance)
+    }
+  }
+  
   dhcp.onchange = () => {
       if (dhcp.checked) {
           hide(ip)

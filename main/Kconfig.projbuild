@@ -40,13 +40,14 @@ config SERVER_IP
 endmenu
 
 menu "mDNS Settings"
-        config MDNS_HOSTNAME
-        string "mDNS Hostname"
-        default "ESP32-CAM"
+    config MDNS_ENABLED
+        bool "mDNS Enabled"
+        default y
         help
-            mDNS Hostname to use
+            Should mDNS be used
 
     config MDNS_INSTANCE
+        depends on MDNS_ENABLED
         string "mDNS Instance Name"
         default "ESP32 Camera Web Server"
         help

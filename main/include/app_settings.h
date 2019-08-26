@@ -14,6 +14,7 @@ struct app_settings_t {
   char wifi_ssid[LEN_WIFI_SSID];
   char wifi_password[LEN_WIFI_PASSWORD];
   char hostname[LEN_HOSTNAME];
+  bool mdns;
   char mdns_instance[LEN_MDNS_INSTANCE];
   bool dhcp;
   ip4_addr_t ip;
