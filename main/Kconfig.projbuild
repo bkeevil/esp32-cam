@@ -39,6 +39,20 @@ config SERVER_IP
 
 endmenu
 
+menu "mDNS Settings"
+        config MDNS_HOSTNAME
+        string "mDNS Hostname"
+        default "ESP32-CAM"
+        help
+            mDNS Hostname to use
+
+    config MDNS_INSTANCE
+        string "mDNS Instance Name"
+        default "ESP32 Camera Web Server"
+        help
+            mDNS Instance Name to use
+endmenu
+
 menu "LED Illuminator"
 config LED_ILLUMINATOR_ENABLED
     bool "LED Illuminator Enabled"

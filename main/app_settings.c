@@ -19,6 +19,7 @@ static void log_settings() {
   ESP_LOGI(TAG," hostname=%s",settings.hostname);
   ESP_LOGI(TAG," wifi_ssid=%s",settings.wifi_ssid);
   ESP_LOGI(TAG," wifi_password=%s",settings.wifi_password);
+  ESP_LOGI(TAG," mdns_instance=%s",settings.mdns_instance);
   ESP_LOGI(TAG," dhcp=%u",settings.dhcp);
   ESP_LOGI(TAG," ip=%s",ip4addr_ntoa(&settings.ip));
   ESP_LOGI(TAG," netmask=%s",ip4addr_ntoa(&settings.netmask));
@@ -40,6 +41,7 @@ void app_settings_reset() {
   strncpy(settings.wifi_ssid,CONFIG_ESP_WIFI_SSID,LEN_WIFI_SSID );
   strncpy(settings.wifi_password,CONFIG_ESP_WIFI_PASSWORD,LEN_WIFI_PASSWORD);
   strncpy(settings.hostname,CONFIG_LWIP_LOCAL_HOSTNAME,LEN_HOSTNAME);
+  strncpy(settings.mdns_instance,CONFIG_MDNS_INSTANCE,LEN_MDNS_INSTANCE);
   settings.dhcp = true;  
 }
 

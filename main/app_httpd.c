@@ -288,6 +288,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     else if(!strcmp(variable, "hostname")) strncpy(settings.hostname,value,LEN_HOSTNAME);
     else if(!strcmp(variable, "wifi_ssid")) strncpy(settings.wifi_ssid,value,LEN_WIFI_SSID);
     else if(!strcmp(variable, "wifi_password")) strncpy(settings.wifi_password,value,LEN_WIFI_PASSWORD);
+    else if(!strcmp(variable, "mdns_instance")) strncpy(settings.mdns_instance,value,LEN_MDNS_INSTANCE);
     else if(!strcmp(variable, "dhcp")) settings.dhcp = val;
     else if(!strcmp(variable, "ip")) settings.ip.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "netmask")) settings.netmask.addr = ipaddr_addr(value);
@@ -360,6 +361,7 @@ static esp_err_t status_handler(httpd_req_t *req){
     p+=sprintf(p, "\"hostname\":\"%s\",", settings.hostname);
     p+=sprintf(p, "\"wifi_ssid\":\"%s\",", settings.wifi_ssid);
     p+=sprintf(p, "\"wifi_password\":\"%s\",", settings.wifi_password);
+    p+=sprintf(p, "\"mdns_instance\":\"%s\",", settings.mdns_instance);
     p+=sprintf(p, "\"dhcp\":%u,", settings.dhcp);
     p+=sprintf(p, "\"ip\":\"%s\",", ip4addr_ntoa(&settings.ip));
     p+=sprintf(p, "\"netmask\":\"%s\",", ip4addr_ntoa(&settings.netmask));

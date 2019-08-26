@@ -12,6 +12,7 @@
 #include "app_camera.h"
 #include "app_httpd.h"
 #include "app_lcd.h"
+#include "app_mdns.h"
 
 EventGroupHandle_t event_group; // Shared event group
 
@@ -23,6 +24,7 @@ void app_shutdown() {
   #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
   app_illuminator_shutdown();
   #endif
+  app_mdns_shutdown();
   app_httpd_shutdown();
   app_wifi_shutdown();
   app_camera_shutdown();
@@ -37,6 +39,7 @@ void app_main()
   app_camera_startup();
   app_wifi_startup(event_group);
   app_httpd_startup();
+  app_mdns_startup(event_group);
   #ifdef CONFIG_USE_SSD1306_LCD_DRIVER
   app_lcd_startup(event_group);
   #endif
