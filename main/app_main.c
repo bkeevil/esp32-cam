@@ -27,7 +27,9 @@ void app_shutdown() {
   app_illuminator_shutdown();
   #endif
   #ifdef CONFIG_MDNS_ENABLED
-  app_mdns_shutdown();
+  if (settings.mdns) {
+    app_mdns_shutdown();
+  }
   #endif
   app_httpd_shutdown();
   app_wifi_shutdown();
@@ -44,9 +46,11 @@ void app_main()
   app_settings_save();    
   app_camera_startup();
   app_wifi_startup(event_group);
-  app_httpd_startup();
+  app_httpd_startup(event_group);
   #ifdef CONFIG_MDNS_ENABLED
-  app_mdns_startup(event_group);
+  if (settings.mdns) {
+    app_mdns_startup(event_group);
+  }
   #endif
   #ifdef CONFIG_USE_SSD1306_LCD_DRIVER
   app_lcd_startup(event_group);

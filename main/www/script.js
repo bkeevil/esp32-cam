@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const gainCeiling = document.getElementById('gainceiling-group')
   const aec = document.getElementById('aec')
   const exposure = document.getElementById('aec_value-group')
+  const mdnsGroup = document.getElementById('mdns-group')
   const mdns = document.getElementById('mdns')
   const mdns_instance = document.getElementById('mdns-instance-group')
   const dhcp = document.getElementById('dhcp')
@@ -305,6 +306,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
       }
     })
 
+  if (typeof mdns == "undefined") {
+    hide(mdns_group)
+    hide(mdns_instance)
+  }
   streamWindowLink.href = `${streamUrl}/stream`
   fetchSettings()
   startStream()
