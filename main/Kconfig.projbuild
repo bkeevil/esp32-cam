@@ -54,6 +54,29 @@ menu "mDNS Settings"
             mDNS Instance Name to use
 endmenu
 
+
+menu "NTP Configuration"
+
+    config ENABLE_NTP
+        bool "Enable NTP Time Synchronization"
+        default y
+        help
+            Enable NTP Time Synchronization.
+
+    config NTP_SERVER
+        string "NTP Server"
+        default "pool.ntp.org"
+        help
+            Choose a default ntp server.
+
+    config TIMEZONE
+        string "Timezone"
+        default "EST5EDT,M3.2.0/2,M11.1.0"
+        help
+            For help see: https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html
+            
+endmenu
+
 menu "LED Illuminator"
 config LED_ILLUMINATOR_ENABLED
     bool "LED Illuminator Enabled"

@@ -15,6 +15,9 @@
 #ifdef CONFIG_MDNS_ENABLED
 #include "app_mdns.h"
 #endif
+#ifdef CONFIG_NTP_ENABLED
+#include "app_sntp.h"
+#endif
 
 EventGroupHandle_t event_group; // Shared event group
 
@@ -32,6 +35,7 @@ void app_shutdown() {
   }
   #endif
   app_httpd_shutdown();
+  //app_sntp_shutdown();
   app_wifi_shutdown();
   app_camera_shutdown();
 }
@@ -47,6 +51,11 @@ void app_main()
   app_camera_startup();
   app_wifi_startup(event_group);
   app_httpd_startup(event_group);
+  #ifdef CONFIG_NTP_ENABLED
+  if (settings.ntp) {
+    app_sntp_startup(event_group);
+  }
+  #endif
   #ifdef CONFIG_MDNS_ENABLED
   if (settings.mdns) {
     app_mdns_startup(event_group);

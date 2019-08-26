@@ -13,6 +13,9 @@
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "app_settings.h"
+#ifdef CONFIG_NTP_ENABLED
+#include "app_sntp.h"
+#endif
 #ifdef CONFIG_MDNS_ENABLED
 #include "app_mdns.h"
 #endif
@@ -301,6 +304,9 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     else if(!strcmp(variable, "mdns_instance")) strncpy(settings.mdns_instance,value,LEN_MDNS_INSTANCE);
     #endif
     else if(!strcmp(variable, "dhcp")) settings.dhcp = val;
+    else if(!strcmp(variable, "ntp")) settings.ntp = val;
+    else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server,value,LEN_NTP_SERVER); 
+    else if(!strcmp(variable, "timezone")) strncpy(settings.timezone,value,LEN_TIMEZONE); 
     else if(!strcmp(variable, "ip")) settings.ip.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "netmask")) settings.netmask.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "gateway")) settings.gateway.addr = ipaddr_addr(value);
@@ -375,7 +381,13 @@ static esp_err_t status_handler(httpd_req_t *req){
     #ifdef CONFIG_MDNS_ENABLED
     p+=sprintf(p, "\"mdns\":%u,", settings.mdns);
     p+=sprintf(p, "\"mdns_instance\":\"%s\",", settings.mdns_instance);
+<<<<<<< HEAD
     #endif
+=======
+    p+=sprintf(p, "\"ntp\":\"%u\",", settings.ntp);
+    p+=sprintf(p, "\"ntp_server\":\"%s\",", settings.ntp_server);
+    p+=sprintf(p, "\"timezone\":\"%s\",", settings.timezone);
+>>>>>>> Initial commit of ntp stuff
     p+=sprintf(p, "\"dhcp\":%u,", settings.dhcp);
     p+=sprintf(p, "\"ip\":\"%s\",", ip4addr_ntoa(&settings.ip));
     p+=sprintf(p, "\"netmask\":\"%s\",", ip4addr_ntoa(&settings.netmask));

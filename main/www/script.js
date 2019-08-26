@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const mdnsGroup = document.getElementById('mdns-group')
   const mdns = document.getElementById('mdns')
   const mdns_instance = document.getElementById('mdns-instance-group')
+  const ntp = document.getElementById('ntp')
+  const ntpServer = document.getElementById('ntp_server-group')
+  const timezone = document.getElementById('timezone-group')
   const dhcp = document.getElementById('dhcp')
   const ip = document.getElementById('ip-group')
   const netmask = document.getElementById('netmask-group')
@@ -282,6 +285,16 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
   
+  ntp.onchange = () => {
+    if (ntp.checked) {
+      show(ntp_server)
+      show(timezone)
+    } else {
+      hide(ntp_server)
+      hide(timezone)
+    }
+  }
+
   dhcp.onchange = () => {
       if (dhcp.checked) {
           hide(ip)
