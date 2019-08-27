@@ -20,50 +20,29 @@ static const char *TAG = "LCD";
 
 static TaskHandle_t xUpdateLCDTaskHandle = NULL;
 
-static EventGroupHandle_t _event_group = 0;
-
 SSD1306_t lcd;
 
 char lineChar[24];
 
 void app_update_lcd_task (void * pvParameters) {
 	int rssi;
-	EventBits_t uxBits;
-  
-  for (;;) {
-		uxBits = xEventGroupWaitBits(_event_group,WIFI_CONNECTED_BIT | WIFI_SOFTAP_BIT,pdFALSE,pdFALSE,100 / portTICK_PERIOD_MS);
+
+	for (;;) {
 		ssd1306_clear_screen(&lcd, false);
 		ssd1306_contrast(&lcd, 0xff);
-		if ((uxBits & WIFI_CONNECTED_BIT) == WIFI_CONNECTED_BIT) {	
-			ip4addr_ntoa_r(&settings.ip,lineChar,24);
-			ssd1306_display_text(&lcd,0, lineChar, strlen(lineChar), false);
-	    ssd1306_display_text(&lcd,1, settings.wifi_ssid, strlen(settings.wifi_ssid), false);
-			rssi = 2 * (wifi_get_rssi() + 100);
-	    sprintf(lineChar,"RSSI: %d%%",rssi);
-		  ssd1306_display_text(&lcd, 2, lineChar, strlen(lineChar), false);		 
-  		sprintf(lineChar,"FPS: %.1f",avg_fps);
-	  	ssd1306_display_text(&lcd,3, lineChar, strlen(lineChar), false);
-  		vTaskDelay(1000 / portTICK_PERIOD_MS);
-		} else if ((uxBits & WIFI_SOFTAP_BIT) == WIFI_SOFTAP_BIT) {
-		  strncpy(lineChar,CONFIG_SERVER_IP,24);
-			ssd1306_display_text(&lcd, 0, lineChar, strlen(lineChar), false);
-	    ssd1306_display_text(&lcd, 1, CONFIG_ESP_WIFI_AP_SSID, strlen(CONFIG_ESP_WIFI_AP_SSID), false);
-			sprintf(lineChar,"AP Conn: %d",wifi_connection_count());
-			ssd1306_display_text(&lcd, 2, lineChar, strlen(lineChar), false);
-			sprintf(lineChar,"FPS: %.1f",avg_fps);
-	  	ssd1306_display_text(&lcd,3, lineChar, strlen(lineChar), false);
-  		vTaskDelay(1000 / portTICK_PERIOD_MS);
-		} else {	
-			ssd1306_display_text(&lcd,1, settings.wifi_ssid, strlen(settings.wifi_ssid), false);
-			ssd1306_display_text(&lcd,2,"Connecting...",14,false);
-  		vTaskDelay(400 / portTICK_PERIOD_MS);
-    }
-  }
+		ip4addr_ntoa_r(&settings.ip,lineChar,24);
+		ssd1306_display_text(&lcd,0, lineChar, strlen(lineChar), false);
+		ssd1306_display_text(&lcd,1, settings.wifi_ssid, strlen(settings.wifi_ssid), false);
+		rssi = 2 * (wifi_get_rssi() + 100);
+		sprintf(lineChar,"RSSI: %d%%",rssi);
+		ssd1306_display_text(&lcd, 2, lineChar, strlen(lineChar), false);		 
+		sprintf(lineChar,"FPS: %.1f",avg_fps);
+		ssd1306_display_text(&lcd,3, lineChar, strlen(lineChar), false);
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
 }
 
-void app_lcd_startup(EventGroupHandle_t event_group) {
-  _event_group = event_group;
-
+void app_lcd_startup() {
   #if CONFIG_I2C_INTERFACE
 	ESP_LOGI(TAG, "INTERFACE is i2c");
 	ESP_LOGI(TAG, "CONFIG_SDA_GPIO=%d",CONFIG_SDA_GPIO);

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void app_lcd_startup(EventGroupHandle_t event_group);
+void app_lcd_startup();
 void app_lcd_shutdown();
 
 #ifdef __cplusplus

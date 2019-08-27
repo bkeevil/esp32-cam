@@ -5,8 +5,7 @@
 extern "C" {
 #endif
 
-void app_sntp_startup(EventGroupHandle_t event_group);
-void app_sntp_shutdown();
+void app_sntp_startup();
 
 #ifdef __cplusplus
 }

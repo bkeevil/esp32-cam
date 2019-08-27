@@ -16,7 +16,7 @@
 
 static const char *TAG = "wifi station";
 
-static EventGroupHandle_t _event_group = 0;
+extern EventGroupHandle_t event_group;
 
 static int s_retry_num = 0;
 
@@ -102,20 +102,12 @@ void wifi_init_softap()
     }
 
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config));
-    xEventGroupSetBits(_event_group, WIFI_SOFTAP_BIT);
+    xEventGroupSetBits(event_group, WIFI_SOFTAP_BIT);
     ESP_LOGI(TAG, "wifi_init_softap finished.SSID:%s password:%s",
              CONFIG_ESP_WIFI_AP_SSID, CONFIG_ESP_WIFI_AP_PASSWORD);
 }
 
 static void wifi_init_sta(void) {
-    
-    /*wifi_config_t wifi_config = {
-         .sta = {
-            .ssid = "Prognosti-Indoors",
-            .password = "kjgnisgPE3iY6VsBN8BKSMAT"
-        },
-    };*/
-    
     wifi_config_t wifi_config;
     memset(&wifi_config, 0, sizeof(wifi_config_t));
     snprintf((char*)wifi_config.sta.ssid, 32, "%s", settings.wifi_ssid);
@@ -156,7 +148,7 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
         ESP_LOGW(TAG,"Station disconnected (reason=%d)",event->reason);
         if (s_retry_num <CONFIG_ESP_MAXIMUM_RETRY) {
             esp_wifi_connect();
-            xEventGroupClearBits(_event_group, WIFI_CONNECTED_BIT);
+            xEventGroupClearBits(event_group, WIFI_CONNECTED_BIT);
             s_retry_num++;
             ESP_LOGI(TAG, "Retry to connect to the AP");
         } else {
@@ -172,15 +164,13 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
         settings.ip = event->ip_info.ip;
         ESP_LOGI(TAG, "got ip:%s",ip4addr_ntoa(&settings.ip));
         s_retry_num = 0;
-        xEventGroupSetBits(_event_group, WIFI_CONNECTED_BIT);
+        xEventGroupSetBits(event_group, WIFI_CONNECTED_BIT);
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_CONNECTED) {
         wifi_dump_ap_info();
     }
 }
 
-void app_wifi_startup(EventGroupHandle_t event_group) {
-    _event_group = event_group;   
-    
+void app_wifi_startup() {
     tcpip_adapter_init();
     tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA,settings.hostname);
     tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_AP,settings.hostname);
@@ -203,7 +193,6 @@ void app_wifi_startup(EventGroupHandle_t event_group) {
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
     wifi_init_sta();
-    //wifi_init_softap();
     
     ESP_ERROR_CHECK(esp_wifi_start());
     ESP_ERROR_CHECK(esp_wifi_set_max_tx_power(127));

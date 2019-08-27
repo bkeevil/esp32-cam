@@ -11,10 +11,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const gainCeiling = document.getElementById('gainceiling-group')
   const aec = document.getElementById('aec')
   const exposure = document.getElementById('aec_value-group')
-  const mdnsGroup = document.getElementById('mdns-group')
-  const mdns = document.getElementById('mdns')
   const mdns_instance = document.getElementById('mdns-instance-group')
-  const ntp = document.getElementById('ntp')
   const ntpServer = document.getElementById('ntp_server-group')
   const timezone = document.getElementById('timezone-group')
   const dhcp = document.getElementById('dhcp')
@@ -101,6 +98,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
         if (pageTitle) {
           pageTitle.innerHTML = state.hostname
         }
+        if (typeof state.mdns_instance == 'undefined') {
+          hide(mdns_instance);
+        }
+        if (typeof state.ntpServer == 'undefined') [
+          hide(ntpServer);
+          hide(timezone);
+        ]
       })
   }
 
@@ -275,24 +279,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
   
   framesize.onchange = () => {
     updateConfig(framesize)
-  }
-
-  mdns.onchange = () => {
-    if (mdns.checked) {
-      show(mdns_instance)
-    } else {
-      hide(mdns_instance)
-    }
-  }
-  
-  ntp.onchange = () => {
-    if (ntp.checked) {
-      show(ntp_server)
-      show(timezone)
-    } else {
-      hide(ntp_server)
-      hide(timezone)
-    }
   }
 
   dhcp.onchange = () => {
