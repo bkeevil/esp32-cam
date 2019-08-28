@@ -13,6 +13,11 @@
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "app_settings.h"
+#ifdef CONFIG_SNTP_ENABLED
+#include <time.h>
+#include <sys/time.h>
+#include "app_sntp.h"
+#endif
 #ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
 #include "app_illuminator.h"
 #endif
@@ -299,7 +304,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     else if(!strcmp(variable, "dhcp")) settings.dhcp = val;
     #ifdef CONFIG_SNTP_ENABLED
     else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server,value,LEN_NTP_SERVER); 
-    else if(!strcmp(variable, "timezone")) strncpy(settings.timezone,value,LEN_TIMEZONE); 
+    else if(!strcmp(variable, "timezone")) { strncpy(settings.timezone,value,LEN_TIMEZONE); setenv("TZ", settings.timezone, 1); tzset(); } 
     #endif
     else if(!strcmp(variable, "ip")) settings.ip.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "netmask")) settings.netmask.addr = ipaddr_addr(value);

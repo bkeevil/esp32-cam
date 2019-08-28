@@ -11,6 +11,9 @@
 #include "app_camera.h"
 #include "app_httpd.h"
 #include "app_lcd.h"
+#ifdef CONFIG_MDNS_ENABLED
+#include "mdns.h"
+#endif
 #ifdef CONFIG_SNTP_ENABLED
 #include "app_sntp.h"
 #endif

@@ -20,7 +20,7 @@ static void log_settings() {
   #ifdef CONFIG_MDNS_ENABLED
   ESP_LOGI(TAG," mdns_instance=%s",settings.mdns_instance);
   #endif
-  #ifdef CONFIG_SNTP_ENAblED
+  #ifdef CONFIG_SNTP_ENABLED
   ESP_LOGI(TAG," ntp_server=%s",settings.ntp_server);
   ESP_LOGI(TAG," timezone=%s",settings.timezone);
   #endif

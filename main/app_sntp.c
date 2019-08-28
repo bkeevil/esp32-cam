@@ -1,3 +1,4 @@
+#ifdef CONFIG_SNTP_ENABLED
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -46,3 +47,5 @@ void app_sntp_startup() {
   ESP_LOGI(TAG, "The current date/time is: %s", strftime_buf);
   return;
 }
+
+#endif

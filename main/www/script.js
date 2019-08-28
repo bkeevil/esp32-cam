@@ -99,12 +99,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
           pageTitle.innerHTML = state.hostname
         }
         if (typeof state.mdns_instance == 'undefined') {
-          hide(mdns_instance);
+          hide(mdns_instance)
         }
-        if (typeof state.ntpServer == 'undefined') [
-          hide(ntpServer);
-          hide(timezone);
-        ]
+        if (typeof state.ntp_server == 'undefined') {
+          hide(ntpServer)
+          hide(timezone)
+        }
       })
   }
 
@@ -305,10 +305,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
       }
     })
 
-  if (typeof mdns == "undefined") {
-    hide(mdns_group)
-    hide(mdns_instance)
-  }
   streamWindowLink.href = `${streamUrl}/stream`
   fetchSettings()
   startStream()
