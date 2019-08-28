@@ -14,7 +14,7 @@ int wifi_connection_count();
 int wifi_get_rssi();
 float wifi_get_tx_power();
 
-void app_wifi_startup(EventGroupHandle_t event_group);
+void app_wifi_startup();
 void app_wifi_shutdown();
 
 #ifdef __cplusplus

@@ -2,14 +2,12 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <string.h>
+#include "esp_log.h"
 #include "nvs_flash.h"
 #include "nvs.h"
 #include "sdkconfig.h"
-#include "esp_log.h"
-#include "esp_camera.h"
-#include "sensor.h"
 #include "lwip/ip4_addr.h"
-#include "ssd1306.h"
+//#include "ssd1306.h"
 #include "app_settings.h"
 
 static const char* TAG = "settings";
@@ -19,6 +17,13 @@ static void log_settings() {
   ESP_LOGI(TAG," hostname=%s",settings.hostname);
   ESP_LOGI(TAG," wifi_ssid=%s",settings.wifi_ssid);
   ESP_LOGI(TAG," wifi_password=%s",settings.wifi_password);
+  #ifdef CONFIG_MDNS_ENABLED
+  ESP_LOGI(TAG," mdns_instance=%s",settings.mdns_instance);
+  #endif
+  #ifdef CONFIG_SNTP_ENABLED
+  ESP_LOGI(TAG," ntp_server=%s",settings.ntp_server);
+  ESP_LOGI(TAG," timezone=%s",settings.timezone);
+  #endif
   ESP_LOGI(TAG," dhcp=%u",settings.dhcp);
   ESP_LOGI(TAG," ip=%s",ip4addr_ntoa(&settings.ip));
   ESP_LOGI(TAG," netmask=%s",ip4addr_ntoa(&settings.netmask));
@@ -40,6 +45,13 @@ void app_settings_reset() {
   strncpy(settings.wifi_ssid,CONFIG_ESP_WIFI_SSID,LEN_WIFI_SSID );
   strncpy(settings.wifi_password,CONFIG_ESP_WIFI_PASSWORD,LEN_WIFI_PASSWORD);
   strncpy(settings.hostname,CONFIG_LWIP_LOCAL_HOSTNAME,LEN_HOSTNAME);
+  #ifdef CONFIG_MDNS_ENABLED
+  strncpy(settings.mdns_instance,CONFIG_MDNS_INSTANCE,LEN_MDNS_INSTANCE);
+  #endif
+  #ifdef CONFIG_SNTP_ENABLED
+  strncpy(settings.ntp_server,CONFIG_NTP_SERVER,LEN_NTP_SERVER);
+  strncpy(settings.timezone,CONFIG_TIMEZONE,LEN_TIMEZONE);
+  #endif
   settings.dhcp = true;  
 }
 
@@ -49,6 +61,7 @@ void app_settings_save() {
 
   ret = nvs_open(NVS_KEY,NVS_READWRITE,&handle);
   if (ret == ESP_OK) {
+    settings.size = sizeof(settings);
     ret = nvs_set_blob(handle,"settings",&settings,sizeof(settings));
     if (ret == ESP_OK) {
       nvs_commit(handle);
@@ -80,14 +93,21 @@ void app_settings_startup() {
     size_t size = sizeof(settings);
     ret = nvs_get_blob(handle,"settings",&settings,&size);
     if (ret == ESP_OK) { 
-      ESP_LOGI(TAG,"Settings loaded from NVS");
-      log_settings();
+      if (settings.size == sizeof(settings)) {
+        ESP_LOGI(TAG,"Settings loaded from NVS");
+        log_settings();
+      } else {
+        app_settings_reset();
+        app_settings_save();
+      }
     } else {
       app_settings_reset();
+      app_settings_save();
     }
     nvs_close(handle);
   } else {
-    app_settings_reset(); 
+    app_settings_reset();
+    app_settings_save(); 
   } 
 }
 

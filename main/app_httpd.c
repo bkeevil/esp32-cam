@@ -2,6 +2,9 @@
 #include "esp_http_server.h"
 #include "esp_timer.h"
 #include "esp_camera.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/event_groups.h"
 //#include "img_converters.h"
 //#include "fb_gfx.h"
 #include "driver/ledc.h"
@@ -10,6 +13,11 @@
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "app_settings.h"
+#ifdef CONFIG_SNTP_ENABLED
+#include <time.h>
+#include <sys/time.h>
+#include "app_sntp.h"
+#endif
 #ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
 #include "app_illuminator.h"
 #endif
@@ -31,6 +39,8 @@ static const char* _STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %
 
 httpd_handle_t stream_httpd = NULL;
 httpd_handle_t camera_httpd = NULL;
+
+extern EventGroupHandle_t event_group;
 
 #ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
 static int led_duty = 0; 
@@ -288,7 +298,14 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     else if(!strcmp(variable, "hostname")) strncpy(settings.hostname,value,LEN_HOSTNAME);
     else if(!strcmp(variable, "wifi_ssid")) strncpy(settings.wifi_ssid,value,LEN_WIFI_SSID);
     else if(!strcmp(variable, "wifi_password")) strncpy(settings.wifi_password,value,LEN_WIFI_PASSWORD);
+    #ifdef CONFIG_MDNS_ENABLED
+    else if(!strcmp(variable, "mdns_instance")) strncpy(settings.mdns_instance,value,LEN_MDNS_INSTANCE);
+    #endif
     else if(!strcmp(variable, "dhcp")) settings.dhcp = val;
+    #ifdef CONFIG_SNTP_ENABLED
+    else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server,value,LEN_NTP_SERVER); 
+    else if(!strcmp(variable, "timezone")) { strncpy(settings.timezone,value,LEN_TIMEZONE); setenv("TZ", settings.timezone, 1); tzset(); } 
+    #endif
     else if(!strcmp(variable, "ip")) settings.ip.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "netmask")) settings.netmask.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "gateway")) settings.gateway.addr = ipaddr_addr(value);
@@ -360,6 +377,13 @@ static esp_err_t status_handler(httpd_req_t *req){
     p+=sprintf(p, "\"hostname\":\"%s\",", settings.hostname);
     p+=sprintf(p, "\"wifi_ssid\":\"%s\",", settings.wifi_ssid);
     p+=sprintf(p, "\"wifi_password\":\"%s\",", settings.wifi_password);
+    #ifdef CONFIG_MDNS_ENABLED
+    p+=sprintf(p, "\"mdns_instance\":\"%s\",", settings.mdns_instance);
+    #endif
+    #ifdef CONFIG_SNTP_ENABLED
+    p+=sprintf(p, "\"ntp_server\":\"%s\",", settings.ntp_server);
+    p+=sprintf(p, "\"timezone\":\"%s\",", settings.timezone);
+    #endif
     p+=sprintf(p, "\"dhcp\":%u,", settings.dhcp);
     p+=sprintf(p, "\"ip\":\"%s\",", ip4addr_ntoa(&settings.ip));
     p+=sprintf(p, "\"netmask\":\"%s\",", ip4addr_ntoa(&settings.netmask));
@@ -410,6 +434,7 @@ static esp_err_t index_handler(httpd_req_t *req){
 
 void app_httpd_startup(){
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+
     config.max_uri_handlers = 10;
 
     httpd_uri_t index_uri = {

@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
   const gainCeiling = document.getElementById('gainceiling-group')
   const aec = document.getElementById('aec')
   const exposure = document.getElementById('aec_value-group')
+  const mdns_instance = document.getElementById('mdns-instance-group')
+  const ntpServer = document.getElementById('ntp_server-group')
+  const timezone = document.getElementById('timezone-group')
   const dhcp = document.getElementById('dhcp')
   const ip = document.getElementById('ip-group')
   const netmask = document.getElementById('netmask-group')
@@ -94,6 +97,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
         var pageTitle = document.getElementById("page-title")
         if (pageTitle) {
           pageTitle.innerHTML = state.hostname
+        }
+        if (typeof state.mdns_instance == 'undefined') {
+          hide(mdns_instance)
+        }
+        if (typeof state.ntp_server == 'undefined') {
+          hide(ntpServer)
+          hide(timezone)
         }
       })
   }

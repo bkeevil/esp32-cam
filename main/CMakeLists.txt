@@ -7,6 +7,7 @@ set(COMPONENT_SRCS
     "app_fonts.c" 
     "app_httpd.c" 
     "app_lcd.c" 
+    "app_sntp.c"
 )
 
 set(COMPONENT_ADD_INCLUDEDIRS "include" "fonts")
