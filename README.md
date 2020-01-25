@@ -65,7 +65,7 @@ cd myprojects
 clone the repository using the recursive option:
 
 ```
-git clone --recursive https://github.com/bkeevil/esp-cam.git
+git clone --recursive https://github.com/bkeevil/esp32-cam.git
 cd esp-cam
 ```  
 
