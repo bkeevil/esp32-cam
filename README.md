@@ -52,6 +52,8 @@ Espressif originally released their source code under the MIT license. I will re
 
 The source code requires the [installation of the ESP-IDF toolchain and development framework](https://docs.espressif.com/projects/esp-idf/en/stable/get-started/index.html)
 
+**The source code works with the release/v4.0 branch.**
+
 Once that is done, create a folder for your projects and set the path and environment variables of your shell:
 
 ```

@@ -17,12 +17,12 @@
 static const char *TAG = "sntp";
 extern EventGroupHandle_t event_group;
 
-void time_sync_notification_cb(struct timeval *tv) {
+void time_sync_ notification_cb(struct timeval *tv) {
     ESP_LOGI(TAG, "Notification of a time synchronization event");
 }
 
 void app_sntp_startup() {
-  time_t now = 0;
+  time_t now = 0
   struct tm timeinfo = { 0 };
   
   ESP_LOGI(TAG, "Initializing SNTP");
