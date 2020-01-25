@@ -66,7 +66,7 @@ clone the repository using the recursive option:
 
 ```
 git clone --recursive https://github.com/bkeevil/esp32-cam.git
-cd esp-cam
+cd esp32-cam
 ```  
 
 Compress the stylesheet, html and javascript pages in main/www
