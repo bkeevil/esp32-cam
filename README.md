@@ -128,7 +128,9 @@ From the web interface, select a Wifi SSID and password and optionally specify a
 ## Web Camera URLS
 
 Picture: http://IP/capture
+
 Stream: http://IP:81/stream
+
 Control LED: http://IP/control?var=led_intensity&val=[0...255]
 
 ## Notes
