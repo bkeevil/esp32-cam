@@ -113,6 +113,17 @@ Flash the binary file to your ESP32 module using `make flash`
 
 Monitor the debug serial output by running `make monitor`
 
+### Windows 10 Installation Notes
+
+Instead of using make xxxx commands, you have to use idf.py xxxx commands. For example:
+
+```
+idf.py build
+idf.py menuconfig
+idf.py app
+idf.py p- Portname app-flash
+```
+
 ## First Run
 
 When the firmware first starts up, it will try to establish a wifi connection in the following order:
