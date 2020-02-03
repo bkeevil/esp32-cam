@@ -125,6 +125,12 @@ To connect to the access point, point a browser to 192.168.4.1. There is no user
 
 From the web interface, select a Wifi SSID and password and optionally specify a static IP address and other network settings. Reboot the device for the settings to take effect.
 
+## Web Camera URLS
+
+Picture: http://IP/capture
+Stream: http://IP:81/stream
+Control LED: http://IP/control?var=led_intensity&val=[0...255]
+
 ## Notes
 
 - Although the ESP32-Camera driver provides support for the OV3660 sensor, it is not supported by this firmware due to the unavailability of these sensors on the market for testing purposes.
