@@ -18,7 +18,7 @@ The current roadmap involves finishing testing of the features above and creatin
 
 * A basic font library for the lcd and image overlays
 * Playback of image on LCD screen
-* A basic motion detection library
+* A basic motion detection library [See this](https://eloquentarduino.github.io/2020/01/motion-detection-with-esp32-cam-only-arduino-version/)
 * Record and playback from an SD card
 * Basic ONVIF support MJPEG streams only.
 
