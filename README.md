@@ -122,8 +122,17 @@ Instead of using make xxxx commands, you have to use idf.py xxxx commands. For e
 idf.py build
 idf.py menuconfig
 idf.py app
-idf.py p- Portname app-flash
+idf.py -p Portname app-flash
 ```
+
+Start ESP-IDF Command Prompt from Windows Start Menu to have idf.py available automatically.
+
+To further simplify the build process, create a build-windows-defaultcomport file (without any extension) with your devices COM port, e.g. COM15, then from within the ESP-IFD prompt run the build script.
+```
+echo COM15 > build-windows-defaultcomport
+powershell.exe .\build-windows.ps1
+```
+
 
 ## First Run
 

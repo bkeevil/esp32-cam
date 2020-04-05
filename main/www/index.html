@@ -13,9 +13,9 @@
                 <h2 id="page-title">ESP32 Camera</h2>
                 <nav id="maintoolbar">  
                     <button id="get-still">Capture Still Image</button>
-                    <button id="toggle-stream">Start Stream</button>                    
-                </section>
-            </section>    
+                    <button id="toggle-stream">Start Stream</button>
+                </nav>
+            </section>
             <section id="content">
                 <section id="sidebar">
                     
@@ -105,27 +105,27 @@
                     <nav id="network-menu" class="menu">
                         <div class="input-group" id="hostname-group">
                                 <label for="hostname">Hostname</label>
-                                <input type="text" id="hostname" maxsize="32" class="default-action">
+                                <input type="text" id="hostname" maxlength="32" class="default-action">
                         </div>
                         <div class="input-group" id="wifi-ssid-group">
                             <label for="wifi_ssid">Access Point</label>
-                            <input type="text" id="wifi_ssid" maxsize="64" class="default-action">
+                            <input type="text" id="wifi_ssid" maxlength="64" class="default-action">
                         </div>
                         <div class="input-group" id="wifi-password-group">
                             <label for="wifi_password">Password</label>
-                            <input type="password" id="wifi_password" maxsize="64" class="default-action">
+                            <input type="password" id="wifi_password" maxlength="64" class="default-action">
                         </div>
                         <div class="input-group" id="mdns-instance-group">
                             <label for="mdns_instance">mDNS Instance Name</label>
-                            <input type="text" id="mdns_instance" maxsize="32" class="default-action">
+                            <input type="text" id="mdns_instance" maxlength="32" class="default-action">
                         </div>
                         <div class="input-group" id="ntp_server-group">
                             <label for="ntp_server">NTP Server</label>
-                            <input type="text" id="ntp_server" maxsize="32" class="default-action">
+                            <input type="text" id="ntp_server" maxlength="32" class="default-action">
                         </div>
                         <div class="input-group" id="timezone-group">
                             <label for="timezone">Timezone</label>
-                            <input type="text" id="timezone" maxsize="32" class="default-action">
+                            <input type="text" id="timezone" maxlength="32" class="default-action">
                         </div>
                         <div class="input-group" id="dhcp-group">
                             <label for="dhcp">Use DHCP</label>
@@ -136,23 +136,23 @@
                         </div>
                         <div class="input-group" id="ip-group">
                             <label for="ip">IP Address</label>
-                            <input type="text" id="ip" maxsize="15" class="default-action">
+                            <input type="text" id="ip" maxlength="15" class="default-action">
                         </div>
                         <div class="input-group" id="netmask-group">
                             <label for="netmask">Netmask</label>
-                            <input type="text" id="netmask" maxsize="15" class="default-action">
+                            <input type="text" id="netmask" maxlength="15" class="default-action">
                         </div>
                         <div class="input-group" id="gateway-group">
                             <label for="gateway">Gateway</label>
-                            <input type="text" id="gateway" maxsize="15" class="default-action">
+                            <input type="text" id="gateway" maxlength="15" class="default-action">
                         </div>
                         <div class="input-group" id="dns1-group">
                             <label for="dns1">DNS 1</label>
-                            <input type="text" id="dns1" maxsize="15" class="default-action">
+                            <input type="text" id="dns1" maxlength="15" class="default-action">
                         </div>
                         <div class="input-group" id="dns2-group">
                             <label for="dns2">DNS 2</label>
-                            <input type="text" id="dns2" maxsize="15" class="default-action">
+                            <input type="text" id="dns2" maxlength="15" class="default-action">
                         </div>      
                     </nav>        
 
@@ -252,7 +252,7 @@
                       <button id="restore-defaults">Restore Defaults</button>
                       <button id="refresh-settings">Retrieve Settings</button>
                       <button id="store-settings">Save Settings</button>
-                      <button id="reboot-camera">Reboot Camera</h> <!-- Reboot does not work -->
+                      <button id="reboot-camera">Reboot Camera</button> <!-- Reboot does not work -->
                     </nav>  
 
                 </section> <!-- sidebar -->
@@ -263,6 +263,6 @@
                     <a href="#" id="stream-window-link" target="_blank">Open Stream in New Window</a>
                 </figure>
             </section> <!-- content -->
-        </section>
+        </section> <!-- main -->
     </body>
 </html>
