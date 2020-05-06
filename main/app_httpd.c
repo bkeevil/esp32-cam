@@ -445,7 +445,7 @@ void app_httpd_startup(){
     };
 
     httpd_uri_t stylesheet_uri = {
-        .uri       = "/stylesheet.css",
+        .uri       = "/style.css",
         .method    = HTTP_GET,
         .handler   = stylesheet_handler,
         .user_ctx  = NULL
