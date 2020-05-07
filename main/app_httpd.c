@@ -376,7 +376,7 @@ static esp_err_t status_handler(httpd_req_t *req){
     p+=sprintf(p, "\"colorbar\":%u,", s->status.colorbar);
     p+=sprintf(p, "\"hostname\":\"%s\",", settings.hostname);
     p+=sprintf(p, "\"wifi_ssid\":\"%s\",", settings.wifi_ssid);
-    p+=sprintf(p, "\"wifi_password\":\"%s\",", settings.wifi_password);
+    //p+=sprintf(p, "\"wifi_password\":\"%s\",", settings.wifi_password);
     #ifdef CONFIG_MDNS_ENABLED
     p+=sprintf(p, "\"mdns_instance\":\"%s\",", settings.mdns_instance);
     #endif
