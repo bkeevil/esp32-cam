@@ -37,6 +37,12 @@ config SERVER_IP
     help
     IP address that the ESP will assign to it's AP interface. You can use this IP to connect to the camera after flashing.
 
+config LWIP_LOCAL_HOSTNAME
+    string "Local hostname"
+    default "espressif"
+    help
+    The hostname under which the camera will accesible in the local network.
+
 endmenu
 
 menu "mDNS Settings"

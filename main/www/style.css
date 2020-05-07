@@ -11,6 +11,7 @@ section#main {
 }
 
 section#header {
+  min-width: 342px;
   background-color: #363636;
   margin-bottom: 6px;
   padding: 4px 12px;
@@ -46,7 +47,7 @@ nav.menu {
   display: none;
   flex-direction: column;
   flex-wrap: nowrap;
-  min-width: 340px;
+  min-width: 350px;
   background: #363636;
   padding: 8px;
   border-radius: 4px;
@@ -138,7 +139,12 @@ figure img {
 .input-group>label {
   display: inline-block;
   padding-right: 10px;
-  min-width: 47%
+  min-width: 38%
+}
+
+.input-group>output {
+  min-width: 25px;
+    padding: 0 5px;
 }
 
 .input-group input,.input-group select {
