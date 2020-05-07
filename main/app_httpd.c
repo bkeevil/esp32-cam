@@ -392,6 +392,7 @@ static esp_err_t status_handler(httpd_req_t *req){
     p+=sprintf(p, "\"dns2\":\"%s\"", ip4addr_ntoa(&settings.dns2));
 #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     p+= sprintf(p, ",\"led_intensity\":%u", led_duty);
+    p+= sprintf(p, ",\"led_max_intensity\":%u", CONFIG_LED_MAX_INTENSITY);
 #else
     p+= sprintf(p, ",\"led_intensity\":%d", -1);
 #endif
