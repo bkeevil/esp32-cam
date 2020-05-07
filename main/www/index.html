@@ -41,26 +41,30 @@
                         </div>
                         <div class="input-group" id="quality-group">
                             <label for="quality">Quality</label>
+                            <output name="quality_out" id="quality_out" for="quality">10</output>
                             <div class="range-min">10</div>
-                            <input type="range" id="quality" min="10" max="63" value="10" class="default-action">
+                            <input type="range" id="quality" min="10" max="63" value="10" oninput="quality_out.value=quality.value" class="default-action">
                             <div class="range-max">63</div>
                         </div>
                         <div class="input-group" id="brightness-group">
                             <label for="brightness">Brightness</label>
+                            <output name="brightness_out" id="brightness_out" for="brightness">0</output>
                             <div class="range-min">-2</div>
-                            <input type="range" id="brightness" min="-2" max="2" value="0" class="default-action">
+                            <input type="range" id="brightness" min="-2" max="2" value="0" oninput="brightness_out.value=brightness.value" class="default-action">
                             <div class="range-max">2</div>
                         </div>
                         <div class="input-group" id="contrast-group">
                             <label for="contrast">Contrast</label>
+                            <output name="contrast_out" id="contrast_out" for="contrast">0</output>
                             <div class="range-min">-2</div>
-                            <input type="range" id="contrast" min="-2" max="2" value="0" class="default-action">
+                            <input type="range" id="contrast" min="-2" max="2" value="0" oninput="contrast_out.value=contrast.value" class="default-action">
                             <div class="range-max">2</div>
                         </div>
                         <div class="input-group" id="saturation-group">
                             <label for="saturation">Saturation</label>
+                            <output name="saturation_out" id="saturation_out" for="saturation">0</output>
                             <div class="range-min">-2</div>
-                            <input type="range" id="saturation" min="-2" max="2" value="0" class="default-action">
+                            <input type="range" id="saturation" min="-2" max="2" value="0" oninput="saturation_out.value=saturation.value" class="default-action">
                             <div class="range-max">2</div>
                         </div>
                         <div class="input-group" id="special_effect-group">
@@ -91,8 +95,9 @@
                         </div>
                         <div class="input-group" id="led-group">
                           <label for="led_intensity">LED Intensity</label>
+                          <output name="led_intensity_out" id="led_intensity_out" for="led_intensity">0</output>
                           <div class="range-min">0</div>
-                          <input type="range" id="led_intensity" min="0" max="255" value="0" class="default-action">
+                          <input type="range" id="led_intensity" min="0" max="255" value="0" oninput="led_intensity_out.value=led_intensity.value" class="default-action">
                           <div class="range-max">255</div>
                         </div>
                     </nav>
@@ -202,14 +207,16 @@
                         </div>
                         <div class="input-group" id="ae_level-group">
                             <label for="ae_level">AE Level</label>
+                            <output name="ae_level_out" id="ae_level_out" for="ae_level">0</output>
                             <div class="range-min">-2</div>
-                            <input type="range" id="ae_level" min="-2" max="2" value="0" class="default-action">
+                            <input type="range" id="ae_level" min="-2" max="2" value="0" oninput="ae_level_out.value=ae_level.value" class="default-action">
                             <div class="range-max">2</div>
                         </div>
                         <div class="input-group" id="aec_value-group">
                             <label for="aec_value">Exposure</label>
+                            <output name="aec_value_out" id="aec_value_out" for="aec_value">204</output>
                             <div class="range-min">0</div>
-                            <input type="range" id="aec_value" min="0" max="1200" value="204" class="default-action">
+                            <input type="range" id="aec_value" min="0" max="1200" value="204" oninput="aec_value_out.value=aec_value.value" class="default-action">
                             <div class="range-max">1200</div>
                         </div>
                         <div class="input-group" id="agc-group">
@@ -221,14 +228,16 @@
                         </div>
                         <div class="input-group hidden" id="agc_gain-group">
                             <label for="agc_gain">Gain</label>
+                            <output name="agc_gain_out" id="agc_gain_out" for="agc_gain">5x</output>
                             <div class="range-min">1x</div>
-                            <input type="range" id="agc_gain" min="0" max="30" value="5" class="default-action">
+                            <input type="range" id="agc_gain" min="0" max="30" value="5" oninput="agc_gain_out.value=agc_gain.value + 'x'" class="default-action">
                             <div class="range-max">31x</div>
                         </div>
                         <div class="input-group" id="gainceiling-group">
                             <label for="gainceiling">Gain Ceiling</label>
+                            <output name="gainceiling_out" id="gainceiling_out" for="gainceiling">0x</output>
                             <div class="range-min">2x</div>
-                            <input type="range" id="gainceiling" min="0" max="6" value="0" class="default-action">
+                            <input type="range" id="gainceiling" min="0" max="6" value="0" oninput="gainceiling_out.value=gainceiling.value + 'x'" class="default-action">
                             <div class="range-max">128x</div>
                         </div>
                         <div class="input-group" id="raw_gma-group">
