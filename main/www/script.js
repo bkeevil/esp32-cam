@@ -134,7 +134,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
             el.checked = value
         } else {
             initialValue = el.value
-            el.value = value
+            // Prevent undefined or null stringified values
+            el.value = (value === undefined || value === null) ? '' : value
         }
 
         if (updateRemote && initialValue !== value) {
