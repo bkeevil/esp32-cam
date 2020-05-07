@@ -105,6 +105,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
           hide(ntpServer)
           hide(timezone)
         }
+        // Update the LED intensity slider max-value togehther with the related label
+        if (state.led_intensity !== -1 && state.led_max_intensity) {
+          let led_intensity_slider = document.getElementById("led_intensity");
+          led_intensity_slider.max = state.led_max_intensity;
+          let led_intensity_range_max = document.querySelector('#led-group > div.range-max');
+          led_intensity_range_max.innerText = state.led_max_intensity;
+        }
       })
   }
 
