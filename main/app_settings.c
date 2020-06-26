@@ -52,7 +52,7 @@ void app_settings_reset() {
   strncpy(settings.ntp_server,CONFIG_NTP_SERVER,LEN_NTP_SERVER);
   strncpy(settings.timezone,CONFIG_TIMEZONE,LEN_TIMEZONE);
   #endif
-  settings.dhcp = true;  
+  settings.dhcp = true;
 }
 
 void app_settings_save() {
@@ -84,15 +84,15 @@ void app_settings_startup() {
     ESP_ERROR_CHECK(nvs_flash_erase());
     ret = nvs_flash_init();
   }
-  ESP_ERROR_CHECK(ret);  
+  ESP_ERROR_CHECK(ret);
 
   ESP_LOGI(TAG,"NVS Flash Init");
-  
+
   ret = nvs_open(NVS_KEY,NVS_READONLY,&handle);
   if (ret == ESP_OK) {
     size_t size = sizeof(settings);
     ret = nvs_get_blob(handle,"settings",&settings,&size);
-    if (ret == ESP_OK) { 
+    if (ret == ESP_OK) {
       if (settings.size == sizeof(settings)) {
         ESP_LOGI(TAG,"Settings loaded from NVS");
         log_settings();
@@ -107,8 +107,8 @@ void app_settings_startup() {
     nvs_close(handle);
   } else {
     app_settings_reset();
-    app_settings_save(); 
-  } 
+    app_settings_save();
+  }
 }
 
 void app_settings_shutdown() {

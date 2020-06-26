@@ -2,12 +2,15 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "esp_system.h"
+#ifdef CONFIG_CAMERA_ENABLED
 #include "esp_camera.h"
+#endif
 #include "esp_log.h"
 #include "sdkconfig.h"
 #include "app_settings.h"
 #include "app_camera.h"
 
+#ifdef CONFIG_CAMERA_ENABLED
 static const char *TAG = "Camera";
 
 void app_camera_reset_defaults() {
@@ -83,3 +86,4 @@ void app_camera_shutdown() {
   esp_camera_deinit();
   ESP_LOGI(TAG,"Camera deinitialized");
 }
+#endif

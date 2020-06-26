@@ -8,7 +8,7 @@
 #include "esp_log.h"
 #include "app_settings.h"
 #include "app_wifi.h"
-#include "app_httpd.h"
+#include "app_camera_httpd.h"
 #include "lwip/ip4_addr.h"
 #include "ssd1306.h"
 
@@ -35,7 +35,7 @@ void app_update_lcd_task (void * pvParameters) {
 		ssd1306_display_text(&lcd,1, settings.wifi_ssid, strlen(settings.wifi_ssid), false);
 		rssi = 2 * (wifi_get_rssi() + 100);
 		sprintf(lineChar,"RSSI: %d%%",rssi);
-		ssd1306_display_text(&lcd, 2, lineChar, strlen(lineChar), false);		 
+		ssd1306_display_text(&lcd, 2, lineChar, strlen(lineChar), false);
 		sprintf(lineChar,"FPS: %.1f",avg_fps);
 		ssd1306_display_text(&lcd,3, lineChar, strlen(lineChar), false);
 		vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -70,12 +70,12 @@ void app_lcd_startup() {
 
 	ssd1306_clear_screen(&lcd, false);
 	ssd1306_contrast(&lcd, 0xff);
-  
-  xTaskCreate(app_update_lcd_task, "LCD", 2048, NULL, tskIDLE_PRIORITY, &xUpdateLCDTaskHandle ); 
+
+  xTaskCreate(app_update_lcd_task, "LCD", 2048, NULL, tskIDLE_PRIORITY, &xUpdateLCDTaskHandle );
 }
 
 void app_lcd_shutdown() {
 	ssd1306_clear_screen(&lcd, false);
-	ssd1306_contrast(&lcd, 0xff);	
+	ssd1306_contrast(&lcd, 0xff);
 	vTaskDelete(xUpdateLCDTaskHandle);
 }

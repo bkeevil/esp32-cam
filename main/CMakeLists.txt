@@ -1,12 +1,12 @@
-set(COMPONENT_SRCS 
-    "app_main.c" 
-    "app_settings.c" 
+set(COMPONENT_SRCS
+    "app_main.c"
+    "app_settings.c"
     "app_illuminator.c"
-    "app_camera.c" 
-    "app_wifi.c"  
-    "app_fonts.c" 
-    "app_httpd.c" 
-    "app_lcd.c" 
+    "app_camera.c"
+    "app_wifi.c"
+    "app_fonts.c"
+    "app_camera_httpd.c"
+    "app_lcd.c"
     "app_sntp.c"
 )
 
