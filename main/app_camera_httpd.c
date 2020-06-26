@@ -1,7 +1,9 @@
-#include "app_httpd.h"
+#include "app_camera_httpd.h"
 #include "esp_http_server.h"
 #include "esp_timer.h"
+#ifdef CONFIG_CAMERA_ENABLED
 #include "esp_camera.h"
+#endif
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
@@ -18,10 +20,11 @@
 #include <sys/time.h>
 #include "app_sntp.h"
 #endif
-#ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
+#ifdef CONFIG_LED_ILLUMINATOR_ENABLED
 #include "app_illuminator.h"
 #endif
 
+#ifdef CONFIG_CAMERA_ENABLED
 static const char* TAG = "camera_httpd";
 
 float avg_fps = 0;
@@ -42,8 +45,8 @@ httpd_handle_t camera_httpd = NULL;
 
 extern EventGroupHandle_t event_group;
 
-#ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
-static int led_duty = 0; 
+#ifdef CONFIG_LED_ILLUMINATOR_ENABLED
+static int led_duty = 0;
 #endif
 
 bool isStreaming = false;
@@ -103,14 +106,14 @@ static esp_err_t capture_handler(httpd_req_t *req){
     esp_err_t res = ESP_OK;
     int64_t fr_start = esp_timer_get_time();
 
-#ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
+#ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     app_illuminator_set_led_intensity(led_duty);
-    vTaskDelay(150 / portTICK_PERIOD_MS); // The LED requires ~150ms to "warm up"    
+    vTaskDelay(150 / portTICK_PERIOD_MS); // The LED requires ~150ms to "warm up"
 #endif
     fb = esp_camera_fb_get();
-#ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
+#ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     app_illuminator_set_led_intensity(0);
-#endif    
+#endif
     if (!fb) {
         ESP_LOGE(TAG, "Camera capture failed");
         httpd_resp_send_500(req);
@@ -220,8 +223,8 @@ static esp_err_t stream_handler(httpd_req_t *req){
 
     avg_fps = 0;
     isStreaming = false;
-    
-#ifdef CONFIG_LED_ILLUMINATOR_ENABLED    
+
+#ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     app_illuminator_set_led_intensity(0);
 #endif
 
@@ -270,9 +273,9 @@ static esp_err_t cmd_handler(httpd_req_t *req){
       if(s->pixformat == PIXFORMAT_JPEG) res = s->set_framesize(s, (framesize_t)val);
     }
     else if(!strcmp(variable, "quality")) res = s->set_quality(s, val);
-    else if(!strcmp(variable, "contrast")) res = s->set_contrast(s, val); 
-    else if(!strcmp(variable, "brightness")) res = s->set_brightness(s, val); 
-    else if(!strcmp(variable, "saturation")) res = s->set_saturation(s, val); 
+    else if(!strcmp(variable, "contrast")) res = s->set_contrast(s, val);
+    else if(!strcmp(variable, "brightness")) res = s->set_brightness(s, val);
+    else if(!strcmp(variable, "saturation")) res = s->set_saturation(s, val);
     else if(!strcmp(variable, "gainceiling")) res = s->set_gainceiling(s, (gainceiling_t)val);
     else if(!strcmp(variable, "colorbar")) res = s->set_colorbar(s, val);
     else if(!strcmp(variable, "awb")) res = s->set_whitebal(s, val);
@@ -290,8 +293,8 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     else if(!strcmp(variable, "raw_gma")) res = s->set_raw_gma(s, val);
     else if(!strcmp(variable, "lenc")) res = s->set_lenc(s, val);
     else if(!strcmp(variable, "special_effect")) res = s->set_special_effect(s, val);
-    else if(!strcmp(variable, "wb_mode")) res = s->set_wb_mode(s, val); 
-    else if(!strcmp(variable, "ae_level")) res = s->set_ae_level(s, val); 
+    else if(!strcmp(variable, "wb_mode")) res = s->set_wb_mode(s, val);
+    else if(!strcmp(variable, "ae_level")) res = s->set_ae_level(s, val);
     #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     else if(!strcmp(variable, "led_intensity")) { led_duty = val; if (isStreaming) app_illuminator_set_led_intensity(led_duty); }
     #endif
@@ -303,8 +306,8 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     #endif
     else if(!strcmp(variable, "dhcp")) settings.dhcp = val;
     #ifdef CONFIG_SNTP_ENABLED
-    else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server,value,LEN_NTP_SERVER); 
-    else if(!strcmp(variable, "timezone")) { strncpy(settings.timezone,value,LEN_TIMEZONE); setenv("TZ", settings.timezone, 1); tzset(); } 
+    else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server,value,LEN_NTP_SERVER);
+    else if(!strcmp(variable, "timezone")) { strncpy(settings.timezone,value,LEN_TIMEZONE); setenv("TZ", settings.timezone, 1); tzset(); }
     #endif
     else if(!strcmp(variable, "ip")) settings.ip.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "netmask")) settings.netmask.addr = ipaddr_addr(value);
@@ -325,7 +328,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
 
 static esp_err_t store_handler(httpd_req_t *req) {
     app_settings_save();
-    esp_camera_save_to_nvs("camera");    
+    esp_camera_save_to_nvs("camera");
     return httpd_resp_send(req, NULL, 0);
 }
 
@@ -531,6 +534,8 @@ void app_httpd_startup(){
 }
 
 void app_httpd_shutdown() {
-  if (stream_httpd) httpd_stop(stream_httpd);  
+  if (stream_httpd) httpd_stop(stream_httpd);
   if (camera_httpd) httpd_stop(camera_httpd);
 }
+
+#endif

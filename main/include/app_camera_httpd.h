@@ -8,8 +8,8 @@ extern "C" {
 
 extern float avg_fps;
 
-void app_httpd_startup();
-void app_httpd_shutdown();
+void app_camera_httpd_startup();
+void app_camera_httpd_shutdown();
 
 #ifdef __cplusplus
 }

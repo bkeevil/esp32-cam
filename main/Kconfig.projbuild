@@ -1,4 +1,4 @@
-menu "Camera Web Server"
+menu "Desk Calender Web"
 
 menu "WiFi Settings"
 config ESP_WIFI_SSID
@@ -85,7 +85,15 @@ menu "SNTP Configuration"
             
 endmenu
 
+menu "Camera Enable"
+config CAMERA_ENABLED
+    bool "Camera Module Enabled"
+    default y
+    help
+    Enable Camera app and driver.
+
 menu "LED Illuminator"
+    depends on CAMERA_ENABLED
 config LED_ILLUMINATOR_ENABLED
     bool "LED Illuminator Enabled"
     default n
@@ -139,6 +147,7 @@ config LED_LEDC_CHANNEL
 endmenu
 
 menu "Camera Pins"
+    depends on CAMERA_ENABLED
 choice CAMERA_MODEL
     bool "Select Camera Pinout"
     default CAMERA_MODEL_WROVER_KIT
@@ -290,7 +299,7 @@ config CAMERA_PIN_Y9
         Select Camera Y9 pin.
 
 endmenu
-
+endmenu
 endmenu
 
 menu "Font Configuration"
