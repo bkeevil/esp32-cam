@@ -19,6 +19,7 @@
 #ifdef CONFIG_SNTP_ENABLED
 #include "app_sntp.h"
 #endif
+#include "app_weather.h"
 
 EventGroupHandle_t event_group;
 
@@ -64,6 +65,7 @@ void app_main()
       #ifdef CONFIG_SNTP_ENABLED
       app_sntp_startup();
       #endif
+      app_weather_startup();
       #ifdef CONFIG_MDNS_ENABLED
       ESP_ERROR_CHECK(mdns_init());
       ESP_ERROR_CHECK(mdns_hostname_set(settings.hostname));

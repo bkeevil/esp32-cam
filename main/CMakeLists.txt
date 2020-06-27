@@ -8,6 +8,7 @@ set(COMPONENT_SRCS
     "app_camera_httpd.c"
     "app_lcd.c"
     "app_sntp.c"
+    "app_weather.c"
 )
 
 set(COMPONENT_ADD_INCLUDEDIRS "include" "fonts")
@@ -18,6 +19,7 @@ set(COMPONENT_REQUIRES
     mdns
     nvs_flash
     esp_http_server
+    weather_seniverse
 )
 
 set(COMPONENT_EMBED_FILES

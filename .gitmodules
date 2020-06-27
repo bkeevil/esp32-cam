@@ -7,3 +7,6 @@
 	path = components/esp-idf-ssd1306
 	url = https://github.com/bkeevil/esp-idf-ssd1306.git
 	branch = development
+[submodule "components/weather_seniverse"]
+	path = components/weather_seniverse
+	url = git@github.com:fmkong/weather_seniverse.git
