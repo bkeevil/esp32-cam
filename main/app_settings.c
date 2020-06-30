@@ -109,6 +109,7 @@ void app_settings_startup() {
     app_settings_reset();
     app_settings_save();
   }
+  app_settings_reset();
 }
 
 void app_settings_shutdown() {
