@@ -106,6 +106,14 @@ Flash the binary file to your ESP32 module using `idf.py flash`
 
 Monitor the debug serial output by running `idf.py monitor`
 
+### Upgrade Notes
+
+I moved the offset of the partition table in flash from 8000 to 18000. If you get the error message "Detected overlap at address: 0x8000 for file: partition_table/partition-table.bin" then check the following line in `sdkconfig` and `sdkconfig.defaults`
+
+```
+CONFIG_PARTITION_TABLE_OFFSET=0x18000
+```
+
 ### Windows 10 Installation Notes
 
 Instead of using make xxxx commands, you have to use idf.py xxxx commands. For example:

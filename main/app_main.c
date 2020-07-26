@@ -42,8 +42,11 @@ void app_main()
 
   ESP_ERROR_CHECK(esp_event_loop_create_default());   
   event_group = xEventGroupCreate();
-  
+    
   app_settings_startup();    
+//  app_settings_reset();
+//  app_settings_save();
+
   app_camera_startup();
   #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
   app_illuminator_startup();
