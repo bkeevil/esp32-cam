@@ -95,7 +95,7 @@ Then, to configure the source code you need to run `make menuconfig` from the ro
 Important settings are:
 
 - Select a USB port for uploading the firmware under *Serial Flasher Config -> Default serial port*
-- Ensure that *Partition Table -> Parititon Table* is set to use the *Custom partition table CSV) called "partitions.csv"
+- Ensure that *Partition Table -> Parititon Table* is set to use the *Custom partition table CSV* called "partitions.csv"
 - Select what board you are using under *Camera Web Server -> Camera Pins*
 - If your board has an LED flash, enable it under *Camera Web Server -> LED Illuminator*
 - You can select default wifi settings under *Camera Web Server -> Wifi Settings*
