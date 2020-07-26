@@ -98,9 +98,11 @@ Important settings are:
 
 When your settings are complete, save them and exit.
 
+If needed, clean your build directory with `idf.py fullclean`
+
 Compile the source code by executing `idf.py build`
 
-Flash the binary file to your ESP32 module using `idf.py -p /dev/ttyUSB0 flash` 
+Flash the binary file to your ESP32 module using `idf.py flash` 
 
 Monitor the debug serial output by running `idf.py monitor`
 
