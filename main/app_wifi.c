@@ -114,20 +114,11 @@ static void wifi_init_sta(void) {
     snprintf((char*)wifi_config.sta.password, 64, "%s", settings.wifi_password);
     ESP_LOGI(TAG, "Connecting to AP SSID:%s password:%s",
         wifi_config.sta.ssid, wifi_config.sta.password);
-
-    wifi_country_t wifi_country = {
-        .cc = "",
-        .schan = 1,
-        .nchan = 14,
-        .max_tx_power = 127,
-        .policy = WIFI_COUNTRY_POLICY_AUTO
-    };
     
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
-    ESP_ERROR_CHECK(esp_wifi_set_country(&wifi_country));
- 
+
     ESP_LOGI(TAG, "wifi_init_sta finished.");
-    ESP_LOGI(TAG, "connect to ap SSID:%s password:%s",
+    ESP_LOGI(TAG, "connecting to ap SSID:%s password:%s",
              wifi_config.sta.ssid, wifi_config.sta.password);
 }
 
@@ -181,8 +172,8 @@ void app_wifi_startup() {
       info.gw.addr = settings.gateway.addr;
       info.netmask.addr = settings.netmask.addr;
 	  tcpip_adapter_set_ip_info(TCPIP_ADAPTER_IF_STA, &info);
-      dns_setserver(1, &settings.dns1);
-      dns_setserver(2, &settings.dns2);
+      dns_setserver(1, (const ip_addr_t *)&settings.dns1);
+      dns_setserver(2, (const ip_addr_t *)&settings.dns2);
     }
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 
@@ -193,9 +184,16 @@ void app_wifi_startup() {
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
     wifi_init_sta();
-    
-    ESP_ERROR_CHECK(esp_wifi_start());
-    ESP_ERROR_CHECK(esp_wifi_set_max_tx_power(127));
+    ESP_ERROR_CHECK(esp_wifi_start());    
+    wifi_country_t wifi_country = {
+        .cc = "",
+        .schan = 1,
+        .nchan = 11,
+        .max_tx_power = 78,
+        .policy = WIFI_COUNTRY_POLICY_AUTO
+    };
+    ESP_ERROR_CHECK(esp_wifi_set_country(&wifi_country));    
+    // ESP_ERROR_CHECK(esp_wifi_set_max_tx_power(78)); 
 }
 
 void app_wifi_shutdown() {

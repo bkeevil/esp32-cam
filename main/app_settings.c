@@ -35,7 +35,7 @@ static void log_settings() {
 void app_settings_reset() {
   nvs_handle_t handle;
 
-  ESP_LOGI(TAG,"Erasing settings from NVS");
+  ESP_LOGI(TAG,"Erasing all settings from NVS");
   if (nvs_open(NVS_KEY,NVS_READWRITE,&handle) == ESP_OK) {
     nvs_erase_all(handle);
     nvs_close(handle);
