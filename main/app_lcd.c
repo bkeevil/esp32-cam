@@ -43,6 +43,7 @@ void app_update_lcd_task (void * pvParameters) {
 }
 
 void app_lcd_startup() {
+	ESP_LOGI(TAG, "Starting up LCD Driver");
   #if CONFIG_I2C_INTERFACE
 	ESP_LOGI(TAG, "INTERFACE is i2c");
 	ESP_LOGI(TAG, "CONFIG_SDA_GPIO=%d",CONFIG_SDA_GPIO);
@@ -75,6 +76,7 @@ void app_lcd_startup() {
 }
 
 void app_lcd_shutdown() {
+	ESP_LOGI(TAG, "Shutting down lcd driver");
 	ssd1306_clear_screen(&lcd, false);
 	ssd1306_contrast(&lcd, 0xff);	
 	vTaskDelete(xUpdateLCDTaskHandle);

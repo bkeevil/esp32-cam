@@ -45,7 +45,8 @@ void app_illuminator_shutdown() {
 }
 
 void app_illuminator_set_led_intensity(uint8_t duty) {      // Turn LED On or Off
-    uint8_t _duty = (duty > CONFIG_LED_MAX_INTENSITY) ? CONFIG_LED_MAX_INTENSITY : duty;
+    uint8_t _duty = CONFIG_LED_MAX_INTENSITY;
+    if (duty < _duty) _duty = duty;
     
     ledc_set_duty(CONFIG_LED_LEDC_SPEED_MODE, CONFIG_LED_LEDC_CHANNEL, _duty);
     ledc_update_duty(CONFIG_LED_LEDC_SPEED_MODE, CONFIG_LED_LEDC_CHANNEL);

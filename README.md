@@ -80,17 +80,7 @@ cd main/www
 cd ../..
 ```
 
-From the root of the repository source tree, create a build directory and then run CMake:
-
-```
-cd /path/to/repository
-mkdir build
-cd build
-cmake ..
-cd ..
-```
-
-Then, to configure the source code you need to run `make menuconfig` from the root of the source tree. This will bring up an ncurses based repository editor.
+To configure the source code you first need to run `idf.py menuconfig` from the root of the source tree. This will bring up an ncurses based repository editor.
 
 Important settings are:
 
@@ -108,11 +98,11 @@ Important settings are:
 
 When your settings are complete, save them and exit.
 
-Compile the source code by executing `make app`
+Compile the source code by executing `idf.py build`
 
-Flash the binary file to your ESP32 module using `make flash` 
+Flash the binary file to your ESP32 module using `idf.py -p /dev/ttyUSB0 flash` 
 
-Monitor the debug serial output by running `make monitor`
+Monitor the debug serial output by running `idf.py monitor`
 
 ### Windows 10 Installation Notes
 
@@ -132,7 +122,6 @@ To further simplify the build process, create a build-windows-defaultcomport fil
 echo COM15 > build-windows-defaultcomport
 powershell.exe .\build-windows.ps1
 ```
-
 
 ## First Run
 
@@ -157,7 +146,7 @@ Control LED: http://IP/control?var=led_intensity&val=[0...255]
 ## Notes
 
 - Although the ESP32-Camera driver provides support for the OV3660 sensor, it is not supported by this firmware due to the unavailability of these sensors on the market for testing purposes.
-- The esp_restart() function used by the web interface for a software reboot is a bit buggy. You might have to unplug the device to force a hardware restart.
+- The esp_restart() function used by the web interface for a software reboot does not work on my boards. You might have to unplug the device to force a hardware restart.
 
 ## Contributions 
 
