@@ -4,3 +4,4 @@ sdkconfig.old
 .DS_Store
 .vscode
 main/www/.idea/
+*.swp

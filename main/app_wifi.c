@@ -14,6 +14,13 @@
 #include "app_settings.h"
 #include "app_wifi.h"
 
+#include "idf_version.h"
+#if defined(__USE_TCP_ADAPTOR)
+#include <tcpip_adapter.h>
+#else
+#include <esp_netif.h>
+#endif
+
 static const char *TAG = "wifi station";
 
 extern EventGroupHandle_t event_group;
@@ -114,7 +121,7 @@ static void wifi_init_sta(void) {
     snprintf((char*)wifi_config.sta.password, 64, "%s", settings.wifi_password);
     ESP_LOGI(TAG, "Connecting to AP SSID:%s password:%s",
         wifi_config.sta.ssid, wifi_config.sta.password);
-    
+
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
 
     ESP_LOGI(TAG, "wifi_init_sta finished.");
@@ -123,11 +130,11 @@ static void wifi_init_sta(void) {
 }
 
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
-{      
+{
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_AP_STACONNECTED) {
         wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
         ESP_LOGI(TAG, "station "MACSTR" join, AID=%d",
-                 MAC2STR(event->mac), event->aid);         
+                 MAC2STR(event->mac), event->aid);
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_AP_STADISCONNECTED) {
         wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
         ESP_LOGI(TAG, "station "MACSTR" leave, AID=%d",
@@ -153,7 +160,7 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
         settings.ip = event->ip_info.ip;
-        ESP_LOGI(TAG, "got ip:%s",ip4addr_ntoa(&settings.ip));
+        ESP_LOGI(TAG, "got ip:" IPSTR "\n", IP2STR(&settings.ip));
         s_retry_num = 0;
         xEventGroupSetBits(event_group, WIFI_CONNECTED_BIT);
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_CONNECTED) {
@@ -162,16 +169,38 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 }
 
 void app_wifi_startup() {
+
+#if defined(__USE_TCP_ADAPTOR)
     tcpip_adapter_init();
     tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA,settings.hostname);
     tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_AP,settings.hostname);
+
+#else
+    esp_netif_t *if_sta;
+    esp_netif_t *if_ap;
+    ESP_ERROR_CHECK(esp_netif_init());
+    if_sta = esp_netif_create_default_wifi_sta();
+    if_ap = esp_netif_create_default_wifi_ap();
+    esp_netif_set_hostname(if_sta,settings.hostname);
+    esp_netif_set_hostname(if_ap,settings.hostname);
+#endif
+
     if (!settings.dhcp) {
+#if defined(__USE_TCP_ADAPTOR)
       tcpip_adapter_dhcpc_stop(TCPIP_ADAPTER_IF_STA);
       tcpip_adapter_ip_info_t info;
+#else
+      esp_netif_dhcpc_stop(if_sta);
+      esp_netif_ip_info_t info;
+#endif
       info.ip.addr = settings.ip.addr;
       info.gw.addr = settings.gateway.addr;
       info.netmask.addr = settings.netmask.addr;
+#if defined(__USE_TCP_ADAPTOR)
 	  tcpip_adapter_set_ip_info(TCPIP_ADAPTER_IF_STA, &info);
+#else
+	  esp_netif_set_ip_info(if_sta, &info);
+#endif
       dns_setserver(1, (const ip_addr_t *)&settings.dns1);
       dns_setserver(2, (const ip_addr_t *)&settings.dns2);
     }
@@ -184,7 +213,7 @@ void app_wifi_startup() {
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
     wifi_init_sta();
-    ESP_ERROR_CHECK(esp_wifi_start());    
+    ESP_ERROR_CHECK(esp_wifi_start());
     wifi_country_t wifi_country = {
         .cc = "",
         .schan = 1,
@@ -192,7 +221,7 @@ void app_wifi_startup() {
         .max_tx_power = 78,
         .policy = WIFI_COUNTRY_POLICY_AUTO
     };
-    ESP_ERROR_CHECK(esp_wifi_set_country(&wifi_country));    
+    ESP_ERROR_CHECK(esp_wifi_set_country(&wifi_country));
     // ESP_ERROR_CHECK(esp_wifi_set_max_tx_power(78)); 
 }
 
