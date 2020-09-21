@@ -3,7 +3,6 @@
 #include "esp_event.h"
 #include "esp_system.h"
 #include "esp_log.h"
-#include "tcpip_adapter.h"
 #include "nvs_flash.h"
 #include "sdkconfig.h"
 #include "app_settings.h"

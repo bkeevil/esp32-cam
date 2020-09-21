@@ -9,7 +9,12 @@
 #include "app_settings.h"
 #include "app_wifi.h"
 #include "app_httpd.h"
-#include "lwip/ip4_addr.h"
+#include "idf_version.h"
+#if defined(__USE_LWIP_IP_4_ADDR)
+#include <lwip/ip4_addr.h>
+#else
+#include <esp_netif.h>
+#endif
 #include "ssd1306.h"
 
 /*#define OLED_ADDRESS 0x3c
@@ -30,12 +35,16 @@ void app_update_lcd_task (void * pvParameters) {
 	for (;;) {
 		ssd1306_clear_screen(&lcd, false);
 		ssd1306_contrast(&lcd, 0xff);
+#if defined(__USE_LWIP_IP_4_ADDR)
 		ip4addr_ntoa_r(&settings.ip,lineChar,24);
+#else
+		esp_ip4addr_ntoa(&settings.ip,lineChar,24);
+#endif
 		ssd1306_display_text(&lcd,0, lineChar, strlen(lineChar), false);
 		ssd1306_display_text(&lcd,1, settings.wifi_ssid, strlen(settings.wifi_ssid), false);
 		rssi = 2 * (wifi_get_rssi() + 100);
 		sprintf(lineChar,"RSSI: %d%%",rssi);
-		ssd1306_display_text(&lcd, 2, lineChar, strlen(lineChar), false);		 
+		ssd1306_display_text(&lcd, 2, lineChar, strlen(lineChar), false);
 		sprintf(lineChar,"FPS: %.1f",avg_fps);
 		ssd1306_display_text(&lcd,3, lineChar, strlen(lineChar), false);
 		vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -71,13 +80,13 @@ void app_lcd_startup() {
 
 	ssd1306_clear_screen(&lcd, false);
 	ssd1306_contrast(&lcd, 0xff);
-  
-  xTaskCreate(app_update_lcd_task, "LCD", 2048, NULL, tskIDLE_PRIORITY, &xUpdateLCDTaskHandle ); 
+
+  xTaskCreate(app_update_lcd_task, "LCD", 2048, NULL, tskIDLE_PRIORITY, &xUpdateLCDTaskHandle );
 }
 
 void app_lcd_shutdown() {
 	ESP_LOGI(TAG, "Shutting down lcd driver");
 	ssd1306_clear_screen(&lcd, false);
-	ssd1306_contrast(&lcd, 0xff);	
+	ssd1306_contrast(&lcd, 0xff);
 	vTaskDelete(xUpdateLCDTaskHandle);
 }

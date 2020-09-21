@@ -6,7 +6,13 @@
 #include "nvs_flash.h"
 #include "nvs.h"
 #include "sdkconfig.h"
-#include "lwip/ip4_addr.h"
+
+#include "idf_version.h"
+#if defined(__USE_TCP_ADAPTOR)
+#include <tcpip_adapter.h>
+#else
+#include <esp_netif.h>
+#endif
 //#include "ssd1306.h"
 #include "app_settings.h"
 
@@ -25,11 +31,11 @@ static void log_settings() {
   ESP_LOGI(TAG," timezone=%s",settings.timezone);
   #endif
   ESP_LOGI(TAG," dhcp=%u",settings.dhcp);
-  ESP_LOGI(TAG," ip=%s",ip4addr_ntoa(&settings.ip));
-  ESP_LOGI(TAG," netmask=%s",ip4addr_ntoa(&settings.netmask));
-  ESP_LOGI(TAG," gateway=%s",ip4addr_ntoa(&settings.gateway));
-  ESP_LOGI(TAG," dns1=%s",ip4addr_ntoa(&settings.dns1));
-  ESP_LOGI(TAG," dns2=%s",ip4addr_ntoa(&settings.dns2));
+  ESP_LOGI(TAG," ip="      IPSTR, IP2STR(&settings.ip));
+  ESP_LOGI(TAG," netmask=" IPSTR, IP2STR(&settings.netmask));
+  ESP_LOGI(TAG," gateway=" IPSTR, IP2STR(&settings.gateway));
+  ESP_LOGI(TAG," dns1="    IPSTR, IP2STR(&settings.dns1));
+  ESP_LOGI(TAG," dns2="    IPSTR, IP2STR(&settings.dns2));
 }
 
 void app_settings_reset() {
@@ -52,7 +58,7 @@ void app_settings_reset() {
   strncpy(settings.ntp_server,CONFIG_NTP_SERVER,LEN_NTP_SERVER);
   strncpy(settings.timezone,CONFIG_TIMEZONE,LEN_TIMEZONE);
   #endif
-  settings.dhcp = true;  
+  settings.dhcp = true;
 }
 
 void app_settings_save() {
@@ -84,15 +90,15 @@ void app_settings_startup() {
     ESP_ERROR_CHECK(nvs_flash_erase());
     ret = nvs_flash_init();
   }
-  ESP_ERROR_CHECK(ret);  
+  ESP_ERROR_CHECK(ret);
 
   ESP_LOGI(TAG,"NVS Flash Init");
-  
+
   ret = nvs_open(NVS_KEY,NVS_READONLY,&handle);
   if (ret == ESP_OK) {
     size_t size = sizeof(settings);
     ret = nvs_get_blob(handle,"settings",&settings,&size);
-    if (ret == ESP_OK) { 
+    if (ret == ESP_OK) {
       if (settings.size == sizeof(settings)) {
         ESP_LOGI(TAG,"Settings loaded from NVS");
         log_settings();
@@ -107,8 +113,8 @@ void app_settings_startup() {
     nvs_close(handle);
   } else {
     app_settings_reset();
-    app_settings_save(); 
-  } 
+    app_settings_save();
+  }
 }
 
 void app_settings_shutdown() {
