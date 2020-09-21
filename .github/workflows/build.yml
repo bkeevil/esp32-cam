@@ -133,6 +133,11 @@ jobs:
           cd "${IDF_PATH}"
           ./install.sh
 
+      - name: Compress HTML assets
+        run: |
+          cd main/www
+          bash ./compress_pages.sh
+
       - name: Build (idf.py)
         if: ${{ matrix.build_method == 'idf' }}
         run: |
