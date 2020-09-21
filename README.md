@@ -85,15 +85,12 @@ To configure the source code you first need to run `idf.py menuconfig` from the 
 Important settings are:
 
 - Select a USB port for uploading the firmware under *Serial Flasher Config -> Default serial port*
-- Ensure that *Partition Table -> Parititon Table* is set to use the *Custom partition table CSV* called "partitions.csv"
 - Select what board you are using under *Camera Web Server -> Camera Pins*
 - If your board has an LED flash, enable it under *Camera Web Server -> LED Illuminator*
 - You can select default wifi settings under *Camera Web Server -> Wifi Settings*
 - If your board has an SSD1306 based OLED display, enable it under *Component Config -> SSD1306 Configuration* and select pins for SDA and SCL
 - To use additional external SPI RAM that may be on your board, enable it using *Component Config -> ESP32 Specific -> Support for external, SPI-connected RAM*
 - To enable font overlays, under *Font Configuration* check *Store Font Partition* (Uses approximately 240K of flash)
-- Under *Component Config -> Camera Configuration* select camera type OV2640 and pin it to Core1
-- Under *Component Config -> WiFi* pin the WiFi task to Core0
 - Enable NTP and select a default NTP server and timezone under *NTP configuration*
 
 When your settings are complete, save them and exit.
