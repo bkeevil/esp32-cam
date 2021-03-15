@@ -121,6 +121,8 @@ static void wifi_init_sta(void) {
     snprintf((char*)wifi_config.sta.password, 64, "%s", settings.wifi_password);
     ESP_LOGI(TAG, "Connecting to AP SSID:%s password:%s",
         wifi_config.sta.ssid, wifi_config.sta.password);
+        
+    wifi_config.sta.scan_method = WIFI_ALL_CHANNEL_SCAN;
 
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
 
@@ -217,7 +219,7 @@ void app_wifi_startup() {
     wifi_country_t wifi_country = {
         .cc = "",
         .schan = 1,
-        .nchan = 11,
+        .nchan = 13,
         .max_tx_power = 78,
         .policy = WIFI_COUNTRY_POLICY_AUTO
     };
