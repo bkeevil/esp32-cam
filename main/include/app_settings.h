@@ -12,7 +12,7 @@
 #define LEN_WIFI_SSID     32
 #define LEN_WIFI_PASSWORD 64
 #define LEN_HOSTNAME      32
-#define LEN_HTTP_USER	  16		//incl string termination /0 => 15 effective
+#define LEN_HTTP_USER	  16		//incl string termination /0 => 15 effective??? wtf chweck this
 #define LEN_HTTP_PASSWORD 16		//incl string termination /0 => 15 effective
 #ifdef CONFIG_MDNS_ENABLED
 #define LEN_MDNS_INSTANCE 32

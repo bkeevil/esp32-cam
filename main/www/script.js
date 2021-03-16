@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(event) {
     var baseHost = document.location.origin
-    var streamUrl = baseHost + ':81'
+    var streamUrlbase = baseHost + ':81/stream'
+    var streamUrl = streamUrlbase
 
     const framesize = document.getElementById('framesize')
     const ledGroup = document.getElementById('led-group')
@@ -63,9 +64,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
   //  	   surl = surl.replace("://", "://" + state.http_user + ":" + state.http_password + "@")
   //      }
         
-        console.log("Starting Stream: ")
+        console.log("Starting Stream: " + `${streamUrl}`)
         
-        view.src = `${streamUrl}/stream`
+        view.src = `${streamUrl}`
         
         show(view)
         show(viewContainer)
@@ -117,12 +118,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     hide(timezone)
                 }
                 
-                var linkurl = `${streamUrl}/stream`
+
 		        if (state.http_auth == 1) {
 			        //add username and password when auth enabled
-	  		        linkurl = linkurl.replace("://", "://" + state.http_user + ":" + state.http_password + "@")
-		        }
- 		        streamWindowLink.href = linkurl
+	  		        streamUrl = `${streamUrlbase}` + '-' + state.http_password 
+	  		        streamWindowLink.href = `${streamUrlbase}` + '-' + state.http_password 
+		        } else {
+		            streamUrl = `${streamUrlbase}`
+ 		            streamWindowLink.href = `${streamUrlbase}`
+ 		        }
                 
                 // Update the LED intensity slider max-value together with the related label
                 if (state.led_intensity !== -1 && state.led_max_intensity) {
@@ -353,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             }
         })
 
-    streamWindowLink.href = `${streamUrl}/stream`
+    streamWindowLink.href = `${streamUrlbase}`
     fetchSettings()
-    startStream()
+    setTimeout(() => { startStream() ; }, 1000)
 })

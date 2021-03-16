@@ -225,10 +225,10 @@ static esp_err_t stream_handler(httpd_req_t *req){
     char * part_buf[64];
 
     //check auth
-	if (auth_check(req) != ESP_OK) {
-		//not authorized, ask auth and quit
-		return auth_req(req);
-	}
+//	if (auth_check(req) != ESP_OK) {
+//		//not authorized, ask auth and quit
+//		return auth_req(req);
+//	}
 	//do this when auth OK
 
     static int64_t last_frame = 0;
@@ -688,7 +688,14 @@ void app_httpd_startup(){
     };
 
 
-   char * surl = "/stream"; 
+   static char * surl[LEN_HTTP_PASSWORD + 1 + 8];         // = "/stream"; 
+   strcpy(surl, "/stream");
+   if (settings.http_auth) {
+        //add -password to the stream url if auth enabled
+        strcat(surl, "-");
+        strcat(surl, settings.http_password);
+   }
+   
    httpd_uri_t stream_uri = {
         .uri       = surl,
         .method    = HTTP_GET,
