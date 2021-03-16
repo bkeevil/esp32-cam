@@ -12,12 +12,20 @@
 #define LEN_WIFI_SSID     32
 #define LEN_WIFI_PASSWORD 64
 #define LEN_HOSTNAME      32
+#define LEN_HTTP_USER	  16		//incl string termination /0 => 15 effective
+#define LEN_HTTP_PASSWORD 16		//incl string termination /0 => 15 effective
 #ifdef CONFIG_MDNS_ENABLED
 #define LEN_MDNS_INSTANCE 32
 #endif
 #ifdef CONFIG_SNTP_ENABLED
 #define LEN_NTP_SERVER    32
 #define LEN_TIMEZONE      32
+#endif
+
+#ifdef CONFIG_DEF_HTTP_AUTH_ENABLED
+#define CONFIG_DEF_HTTP_AUTH_ENABLED true
+#else
+#define CONFIG_DEF_HTTP_AUTH_ENABLED false
 #endif
 
 struct app_settings_t {
@@ -46,6 +54,9 @@ struct app_settings_t {
   esp_ip4_addr_t dns1;
   esp_ip4_addr_t dns2;
 #endif
+  bool http_auth;
+  char http_user[LEN_HTTP_USER + 1];
+  char http_password[LEN_HTTP_PASSWORD + 1];
 } settings;
 
 void app_settings_save();

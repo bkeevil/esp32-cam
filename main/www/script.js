@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const view = document.getElementById('stream')
     const viewContainer = document.getElementById('stream-container')
     const streamWindowLink = document.getElementById('stream-window-link')
+    const http_auth = document.getElementById('http_auth')
+    const http_password = document.getElementById('http_password-group')
+    const http_user = document.getElementById('http_user-group')
 
     function hide(el) {
         el.classList.add('hidden')
@@ -54,8 +57,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     function startStream() {
-        console.log("Starting Stream")
+  //      var surl = `${streamUrl}/stream` 
+  //      if (state.http_auth == 1) {
+  //    //add username and password when auth enabled
+  //  	   surl = surl.replace("://", "://" + state.http_user + ":" + state.http_password + "@")
+  //      }
+        
+        console.log("Starting Stream: ")
+        
         view.src = `${streamUrl}/stream`
+        
         show(view)
         show(viewContainer)
         streamButton.innerHTML = 'Stop Stream'
@@ -105,6 +116,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     hide(ntpServer)
                     hide(timezone)
                 }
+                
+                var linkurl = `${streamUrl}/stream`
+		        if (state.http_auth == 1) {
+			        //add username and password when auth enabled
+	  		        linkurl = linkurl.replace("://", "://" + state.http_user + ":" + state.http_password + "@")
+		        }
+ 		        streamWindowLink.href = linkurl
+                
                 // Update the LED intensity slider max-value together with the related label
                 if (state.led_intensity !== -1 && state.led_max_intensity) {
                     let led_intensity_slider = document.getElementById("led_intensity");
@@ -169,7 +188,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     show(dns1)
                     show(dns2)
                 }
-            }
+            } else if(el.id == "http_auth"){
+	            if (value) {
+		            show(http_user)
+		            show(http_password)
+	            } else {
+		            hide(http_user)
+		            hide(http_password)
+	            }
+            } 
         }
     }
 
@@ -290,6 +317,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     dhcp.onchange = () => {
+        updateConfig(dhcp)
         if (dhcp.checked) {
             hide(ip)
             hide(netmask)
@@ -302,6 +330,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
             show(gateway)
             show(dns1)
             show(dns2)
+        }
+    }
+
+
+    http_auth.onchange = () => {
+        updateConfig(http_auth)
+        if (http_auth.checked) {
+            show(http_user)
+		    show(http_password)
+        } else {
+		    hide(http_user)
+		    hide(http_password)
         }
     }
 

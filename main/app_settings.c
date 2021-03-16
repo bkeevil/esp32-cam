@@ -36,6 +36,9 @@ static void log_settings() {
   ESP_LOGI(TAG," gateway=" IPSTR, IP2STR(&settings.gateway));
   ESP_LOGI(TAG," dns1="    IPSTR, IP2STR(&settings.dns1));
   ESP_LOGI(TAG," dns2="    IPSTR, IP2STR(&settings.dns2));
+  ESP_LOGI(TAG," auth=%u",settings.http_auth);
+  ESP_LOGI(TAG," http_user=%s",settings.http_user);
+  ESP_LOGI(TAG," http_password=%s",settings.http_password);
 }
 
 void app_settings_reset() {
@@ -59,6 +62,9 @@ void app_settings_reset() {
   strncpy(settings.timezone,CONFIG_TIMEZONE,LEN_TIMEZONE);
   #endif
   settings.dhcp = true;
+  settings.http_auth = CONFIG_DEF_HTTP_AUTH_ENABLED;
+  strncpy(settings.http_user, CONFIG_DEF_HTTP_USER, LEN_HTTP_USER);
+  strncpy(settings.http_password, CONFIG_DEF_HTTP_PASSWORD, LEN_HTTP_PASSWORD);
 }
 
 void app_settings_save() {

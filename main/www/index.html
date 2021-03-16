@@ -117,8 +117,23 @@
                             <input type="text" id="wifi_ssid" maxlength="64" class="default-action">
                         </div>
                         <div class="input-group" id="wifi-password-group">
-                            <label for="wifi_password">Password</label>
+                            <label for="wifi_password">WiFi Password</label>
                             <input type="password" id="wifi_password" maxlength="64" class="default-action">
+                        </div>
+                        <div class="input-group" id="http_auth-group">
+                            <label for="http_auth">Authentication</label>
+                            <div class="switch">
+                                <input id="http_auth" type="checkbox" class="default-action">
+                                <label class="slider" for="http_auth"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="http_user-group">
+                            <label for="http_user">Username</label>
+                            <input type="text" id="http_user" maxlength="15" maxsize="16" class="default-action">
+                        </div>
+                        <div class="input-group" id="http_password-group">
+                            <label for="http_password">Password</label>
+                            <input type="password" id="http_password" maxlength="15" maxsize="16" class="default-action">
                         </div>
                         <div class="input-group" id="mdns-instance-group">
                             <label for="mdns_instance">mDNS Instance Name</label>
