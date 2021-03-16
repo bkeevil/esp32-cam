@@ -154,6 +154,7 @@ static esp_err_t auth_check(httpd_req_t *req) {
 
 static esp_err_t auth_req(httpd_req_t *req) {
 	//ruquest the auth if failed
+	    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
 		esp_err_t res = httpd_resp_set_status(req, HTTP_401);
 		if(res == ESP_OK) res = httpd_resp_set_hdr(req, HTTP_REQ_AUTH_HDR, HTTP_REQ_AUTH_REALM);
 		//send_crossorigin_hdr (req); //temporary
@@ -605,7 +606,7 @@ void app_httpd_startup(){
 		//check how big buffer we need for base64 encoded username:password
 		mbedtls_base64_encode( NULL, 0, &b64_len, (unsigned char*) buf, strlen(buf));
 		if (b64_len != BASE64_SIZE_T_MAX) {
-			//yes ve know the length
+			//yes we know the length
 			ESP_LOGI(TAG, " ok, we need %u bytes to encode creds", b64_len);
 			char* b64_buf;
 			b64_buf = malloc(b64_len);
@@ -686,8 +687,10 @@ void app_httpd_startup(){
         .user_ctx  = NULL
     };
 
+
+   char * surl = "/stream"; 
    httpd_uri_t stream_uri = {
-        .uri       = "/stream",
+        .uri       = surl,
         .method    = HTTP_GET,
         .handler   = stream_handler,
         .user_ctx  = NULL
