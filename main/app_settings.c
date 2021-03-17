@@ -62,9 +62,13 @@ void app_settings_reset() {
   strncpy(settings.timezone,CONFIG_TIMEZONE,LEN_TIMEZONE);
   #endif
   settings.dhcp = true;
-  settings.http_auth = CONFIG_DEF_HTTP_AUTH_ENABLED;
+  #ifdef CONFIG_DEF_HTTP_AUTH_ENABLED
+  settings.http_auth = true;
   strncpy(settings.http_user, CONFIG_DEF_HTTP_USER, LEN_HTTP_USER);
   strncpy(settings.http_password, CONFIG_DEF_HTTP_PASSWORD, LEN_HTTP_PASSWORD);
+  #else
+  settings.http_auth = false;
+  #endif
 }
 
 void app_settings_save() {

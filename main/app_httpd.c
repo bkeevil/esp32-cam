@@ -688,7 +688,8 @@ void app_httpd_startup(){
     };
 
 
-   static char * surl[LEN_HTTP_PASSWORD + 1 + 8];         // = "/stream"; 
+   char surl[LEN_HTTP_PASSWORD + 1 + 8];    // = calloc (LEN_HTTP_PASSWORD + 1 + 8, sizeof(char));         // +8 for "/stream-"; 
+   memset(surl, 0, sizeof(surl));
    strcpy(surl, "/stream");
    if (settings.http_auth) {
         //add -password to the stream url if auth enabled

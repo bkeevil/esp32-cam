@@ -1,0 +1,5 @@
+to make "allocate in psram" work go to Component config -> ESP32 specific -> SPI ram config -> SPI RAM ACCESS METHOD -> using heap_caps_malloc
+
+
+
+
