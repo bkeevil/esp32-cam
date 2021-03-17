@@ -21,6 +21,7 @@
 #endif
 #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
 #include "app_illuminator.h"
+//#include <ctype.h>
 #endif
 
 static const char* TAG = "camera_httpd";
@@ -316,11 +317,46 @@ static esp_err_t stream_handler(httpd_req_t *req){
     return res;
 }
 
+static void urldecode2(char *dst, const char *src)      //https://stackoverflow.com/questions/2673207/c-c-url-decode-library/2766963
+{
+        char a, b;
+        while (*src) {
+                if ((*src == '%') &&
+                    ((a = src[1]) && (b = src[2])) &&
+                    (isxdigit(a) && isxdigit(b))) {
+                        if (a >= 'a')
+                                a -= 'a'-'A';
+                        if (a >= 'A')
+                                a -= ('A' - 10);
+                        else
+                                a -= '0';
+                        if (b >= 'a')
+                                b -= 'a'-'A';
+                        if (b >= 'A')
+                                b -= ('A' - 10);
+                        else
+                                b -= '0';
+                        *dst++ = 16*a+b;
+                        src+=3;
+                } else if (*src == '+') {
+                        *dst++ = ' ';
+                        src++;
+                } else {
+                        *dst++ = *src++;
+                }
+        }
+        *dst++ = '\0';
+}
+
+
+
 static esp_err_t cmd_handler(httpd_req_t *req){
     char*  buf;
     size_t buf_len;
     char variable[32] = {0,};
-    char value[32] = {0,};
+    char value[sizeof(settings.wifi_password) * 3];  //sizeof(settings.wifi_password) is the biggest one, *3 because special characters take 3 chard like " " = %20
+    memset(variable, 0, sizeof(variable));
+    memset(value, 0, sizeof(value));
     
     //check auth
 	if (auth_check(req) != ESP_OK) {
@@ -356,11 +392,14 @@ static esp_err_t cmd_handler(httpd_req_t *req){
         return ESP_FAIL;
     }
 
+    urldecode2 (value, value);  //we need to decode (%20 to space etc) https://www.w3schools.com/jsref/jsref_encodeuricomponent.asp 
+
     int val = atoi(value);
-    ESP_LOGI(TAG, "%s = %d", variable, val);
+    ESP_LOGI(TAG, "%s = %s (%d)", variable, value, val);
     sensor_t * s = esp_camera_sensor_get();
     int res = 0;
 
+    
     if(!strcmp(variable, "framesize")) {
       if(s->pixformat == PIXFORMAT_JPEG) res = s->set_framesize(s, (framesize_t)val);
     }

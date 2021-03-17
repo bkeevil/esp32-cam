@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             case 'text':
             case 'password':
             case 'select-one':
-                value = el.value
+                value = encodeURIComponent(el.value)
                 break
             case 'button':
             case 'submit':
@@ -359,5 +359,5 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     streamWindowLink.href = `${streamUrlbase}`
     fetchSettings()
-    setTimeout(() => { startStream() ; }, 1000)
+    setTimeout(() => { startStream() ; }, 2000)
 })

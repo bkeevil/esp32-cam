@@ -99,9 +99,9 @@ void wifi_init_softap()
     }
     wifi_config_t wifi_config;
     memset(&wifi_config, 0, sizeof(wifi_config_t));
-    snprintf((char*)wifi_config.ap.ssid, 32, "%s", CONFIG_ESP_WIFI_AP_SSID);
-    wifi_config.ap.ssid_len = strlen((char*)wifi_config.ap.ssid);
-    snprintf((char*)wifi_config.ap.password, 64, "%s", CONFIG_ESP_WIFI_AP_PASSWORD);
+    strncpy((char*)wifi_config.ap.ssid, CONFIG_ESP_WIFI_AP_SSID, sizeof(wifi_config.ap.ssid));     // whhhyy??? snprintf((char*)wifi_config.ap.ssid, 32, "%s", CONFIG_ESP_WIFI_AP_SSID);
+    //not needed wifi_config.ap.ssid_len = strlen((char*)wifi_config.ap.ssid);
+    strncpy((char*)wifi_config.ap.password, CONFIG_ESP_WIFI_AP_PASSWORD, sizeof(wifi_config.ap.password)); //why ???snprintf((char*)wifi_config.ap.password, 64, "%s", CONFIG_ESP_WIFI_AP_PASSWORD);
     wifi_config.ap.max_connection = 1;
     wifi_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
     if (strlen(CONFIG_ESP_WIFI_AP_PASSWORD) == 0) {
