@@ -390,24 +390,24 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     else if(!strcmp(variable, "led_intensity")) { led_duty = val; if (isStreaming) app_illuminator_set_led_intensity(led_duty); }
     #endif
-    else if(!strcmp(variable, "hostname")) strncpy(settings.hostname,value,LEN_HOSTNAME);
-    else if(!strcmp(variable, "wifi_ssid")) strncpy(settings.wifi_ssid,value,LEN_WIFI_SSID);
-    else if(!strcmp(variable, "wifi_password")) strncpy(settings.wifi_password,value,LEN_WIFI_PASSWORD);
+    else if(!strcmp(variable, "hostname")) strncpy(settings.hostname, value, sizeof(settings.hostname));
+    else if(!strcmp(variable, "wifi_ssid")) strncpy(settings.wifi_ssid, value, sizeof(settings.wifi_ssid));
+    else if(!strcmp(variable, "wifi_password")) strncpy(settings.wifi_password, value, sizeof(settings.wifi_password));
     #ifdef CONFIG_MDNS_ENABLED
-    else if(!strcmp(variable, "mdns_instance")) strncpy(settings.mdns_instance,value,LEN_MDNS_INSTANCE);
+    else if(!strcmp(variable, "mdns_instance")) strncpy(settings.mdns_instance, value, sizeof(settings.mdns_instance));
     #endif
     else if(!strcmp(variable, "dhcp")) settings.dhcp = val;
     #ifdef CONFIG_SNTP_ENABLED
-    else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server,value,LEN_NTP_SERVER);
-    else if(!strcmp(variable, "timezone")) { strncpy(settings.timezone,value,LEN_TIMEZONE); setenv("TZ", settings.timezone, 1); tzset(); }
+    else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server, value, sizeof(settings.ntp_server));
+    else if(!strcmp(variable, "timezone")) { strncpy(settings.timezone, value, sizeof(settings.timezone)); setenv("TZ", settings.timezone, 1); tzset(); }
     #endif
     else if(!strcmp(variable, "ip")) settings.ip.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "netmask")) settings.netmask.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "gateway")) settings.gateway.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "dns1")) settings.dns1.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "dns2")) settings.dns2.addr = ipaddr_addr(value);
-    else if(!strcmp(variable, "http_user")) strncpy(settings.http_user,value,LEN_HTTP_USER);
-	else if(!strcmp(variable, "http_password")) strncpy(settings.http_password,value,LEN_HTTP_PASSWORD);
+    else if(!strcmp(variable, "http_user")) strncpy(settings.http_user, value, sizeof(settings.http_user));
+	else if(!strcmp(variable, "http_password")) strncpy(settings.http_password, value, sizeof(settings.http_user));
 	else if(!strcmp(variable, "http_auth")) settings.http_auth = val;
     else {
       res = -1;
@@ -592,10 +592,11 @@ void app_httpd_startup(){
     
     if (settings.http_auth) {
 		//auth turned on
-		char buf[LEN_HTTP_USER + LEN_HTTP_PASSWORD + 2] = {0};
-		strncpy(buf, settings.http_user, LEN_HTTP_USER);
+		char buf[sizeof(settings.http_user) + sizeof(settings.http_password) + 2];
+		memset(buf, 0, sizeof(buf));
+		strcpy(buf, settings.http_user);
 		strcat(buf, ":");
-		strncat(buf, settings.http_password, LEN_HTTP_PASSWORD);
+		strcat(buf, settings.http_password);
 
 		ESP_LOGI(TAG, " creds=%s", buf);
 
@@ -688,7 +689,7 @@ void app_httpd_startup(){
     };
 
 
-   char surl[LEN_HTTP_PASSWORD + 1 + 8];    // = calloc (LEN_HTTP_PASSWORD + 1 + 8, sizeof(char));         // +8 for "/stream-"; 
+   char surl[sizeof(settings.http_password) + 1 + 8];    // +8 for "/stream-"; 
    memset(surl, 0, sizeof(surl));
    strcpy(surl, "/stream");
    if (settings.http_auth) {
