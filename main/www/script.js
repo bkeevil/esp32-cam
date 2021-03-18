@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
                 console.log(`request to ${query} finished, status: ${response.status}`)
                 if (response.status == 200)
                     //Reload the page and ignore the browser cache after 5seconds
-                    setTimeout(refreshme, 5000)
+                    setTimeout(refreshme, 10000)
             })
     }
 
@@ -110,6 +110,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
                         updateValue(el, state[el.id], false)
                     })
                 document.title = state.hostname
+                
+                
+                
                 var pageTitle = document.getElementById("page-title")
                 if (pageTitle) {
                     pageTitle.innerHTML = state.hostname
@@ -139,6 +142,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     let led_intensity_range_max = document.querySelector('#led-group > div.range-max');
                     led_intensity_range_max.innerText = state.led_max_intensity;
                 }
+                
+                document.getElementById("fps_out").value = state.fps
+                document.getElementById("quality_out").value = state.quality
+                document.getElementById("brightness_out").value = state.brightness
+                document.getElementById("contrast_out").value = state.contrast
+                document.getElementById("saturation_out").value = state.saturation
+                document.getElementById("led_intensity_out").value = state.led_intensity
+                document.getElementById("ae_level_out").value = state.ae_level
+                document.getElementById("aec_value_out").value = state.aec_value
+                document.getElementById("agc_gain_out").value = state.agc_gain
+                document.getElementById("gainceiling_out").value = state.gainceiling
+                
             })
     }
 
