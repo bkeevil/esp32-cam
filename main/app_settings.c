@@ -52,21 +52,21 @@ void app_settings_reset() {
   }
   ESP_LOGI(TAG,"Restoring default settings");
   memset(&settings,0,sizeof(settings));
-  scut(settings.wifi_ssid, CONFIG_ESP_WIFI_SSID, (((sizeof(settings.wifi_ssid)) >= (strlen(CONFIG_ESP_WIFI_SSID))) ? (strlen(CONFIG_ESP_WIFI_SSID)) : (sizeof(settings.wifi_ssid)))     );
-  strncpy(settings.wifi_password, CONFIG_ESP_WIFI_PASSWORD, sizeof(settings.wifi_password));
-  strncpy(settings.hostname, CONFIG_LWIP_LOCAL_HOSTNAME, sizeof(settings.hostname));
+  scut(settings.wifi_ssid, CONFIG_ESP_WIFI_SSID, (((sizeof(settings.wifi_ssid)) >= (sizeof(CONFIG_ESP_WIFI_SSID))) ? (sizeof(CONFIG_ESP_WIFI_SSID)) : (sizeof(settings.wifi_ssid))));
+  scut(settings.wifi_password, CONFIG_ESP_WIFI_PASSWORD, (((sizeof(settings.wifi_password)) >= (sizeof(CONFIG_ESP_WIFI_PASSWORD))) ? (sizeof(CONFIG_ESP_WIFI_PASSWORD)) : (sizeof(settings.wifi_password))));
+  scut(settings.hostname, CONFIG_LWIP_LOCAL_HOSTNAME, (((sizeof(settings.hostname)) >= (sizeof(CONFIG_LWIP_LOCAL_HOSTNAME))) ? (sizeof(CONFIG_LWIP_LOCAL_HOSTNAME)) : (sizeof(settings.hostname))));
   #ifdef CONFIG_MDNS_ENABLED
-  strncpy(settings.mdns_instance, CONFIG_MDNS_INSTANCE, sizeof(settings.mdns_instance));
+  scut(settings.mdns_instance, CONFIG_MDNS_INSTANCE, (((sizeof(settings.mdns_instance)) >= (sizeof(CONFIG_MDNS_INSTANCE))) ? (sizeof(CONFIG_MDNS_INSTANCE)) : (sizeof(settings.mdns_instance))));
   #endif
   #ifdef CONFIG_SNTP_ENABLED
-  strncpy(settings.ntp_server, CONFIG_NTP_SERVER, sizeof(settings.ntp_server));
-  strncpy(settings.timezone, CONFIG_TIMEZONE, sizeof(settings.timezone));
+  scut(settings.ntp_server, CONFIG_NTP_SERVER, (((sizeof(settings.ntp_server)) >= (sizeof(CONFIG_NTP_SERVER))) ? (sizeof(CONFIG_NTP_SERVER)) : (sizeof(settings.ntp_server))));
+  scut(settings.timezone, CONFIG_TIMEZONE, (((sizeof(settings.timezone)) >= (sizeof(CONFIG_TIMEZONE))) ? (sizeof(CONFIG_TIMEZONE)) : (sizeof(settings.timezone))));
   #endif
   settings.dhcp = true;
   #ifdef CONFIG_DEF_HTTP_AUTH_ENABLED
   settings.http_auth = true;
-  strncpy(settings.http_user, CONFIG_DEF_HTTP_USER, sizeof(settings.http_user));
-  strncpy(settings.http_password, CONFIG_DEF_HTTP_PASSWORD, sizeof(settings.http_password));
+  scut(settings.http_user, CONFIG_DEF_HTTP_USER, (((sizeof(settings.http_user)) >= (sizeof(CONFIG_DEF_HTTP_USER))) ? (sizeof(CONFIG_DEF_HTTP_USER)) : (sizeof(settings.http_user))));
+  scut(settings.http_password, CONFIG_DEF_HTTP_PASSWORD, (((sizeof(settings.http_password)) >= (sizeof(CONFIG_DEF_HTTP_PASSWORD))) ? (sizeof(CONFIG_DEF_HTTP_PASSWORD)) : (sizeof(settings.http_password))));
   #else
   settings.http_auth = false;
   #endif
