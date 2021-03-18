@@ -5,23 +5,4 @@ dhcp hostame is too long ! :D
 po zadani retezce ve web ui a kliknuti na save se neulozi posledni ve kterem je prave focus pokud byl zmenen
 mezera v user passwordu udela bordel 
 
-strncpy 
-../main/app_httpd.c: In function 'cmd_handler':
-../main/app_httpd.c:449:46: error: 'strncpy' output may be truncated copying 17 bytes from a string of length 191 [-Werror=stringop-truncation]
-  else if(!strcmp(variable, "http_password")) strncpy(settings.http_password, value, sizeof(settings.http_user));
-                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../main/app_httpd.c:448:45: error: 'strncpy' output may be truncated copying 17 bytes from a string of length 191 [-Werror=stringop-truncation]
-     else if(!strcmp(variable, "http_user")) strncpy(settings.http_user, value, sizeof(settings.http_user));
-                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../main/app_httpd.c:434:49: error: 'strncpy' output may be truncated copying 64 bytes from a string of length 191 [-Werror=stringop-truncation]
-     else if(!strcmp(variable, "wifi_password")) strncpy(settings.wifi_password, value, sizeof(settings.wifi_password));
-                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../main/app_httpd.c:433:45: error: 'strncpy' output may be truncated copying 32 bytes from a string of length 191 [-Werror=stringop-truncation]
-     else if(!strcmp(variable, "wifi_ssid")) strncpy(settings.wifi_ssid, value, sizeof(settings.wifi_ssid));
-                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../main/app_httpd.c:432:44: error: 'strncpy' output may be truncated copying 33 bytes from a string of length 191 [-Werror=stringop-truncation]
-     else if(!strcmp(variable, "hostname")) strncpy(settings.hostname, value, sizeof(settings.hostname));
 
-https://stackoverflow.com/questions/50198319/gcc-8-wstringop-truncation-what-is-the-good-practice
-+
-strNlen

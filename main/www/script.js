@@ -72,6 +72,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
         show(viewContainer)
         streamButton.innerHTML = 'Stop Stream'
     }
+     
+    function refreshme() {
+	    window.location.reload(true);
+    }
 
     function rebootCamera() {
         const query = `${baseHost}/reboot`
@@ -79,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
             .then(response => {
                 console.log(`request to ${query} finished, status: ${response.status}`)
                 if (response.status == 200)
-                //Reload the page and ignore the browser cache.
-                    window.location.reload(true);
+                    //Reload the page and ignore the browser cache after 5seconds
+                    setTimeout(refreshme, 5000)
             })
     }
 

@@ -252,9 +252,27 @@ static esp_err_t stream_handler(httpd_req_t *req){
     app_illuminator_set_led_intensity(led_duty);
 #endif
 
+    //fps limiter init
+    TickType_t xFrequency = 1000 / (portTICK_PERIOD_MS);    //initialize with 1fps
+	TickType_t xLastWakeTime = 0;   // = xTaskGetTickCount ();;
+	uint8_t prevfps = 0;   // settings.fps;
+
     while(true){
 
-        fb = esp_camera_fb_get();
+        fb = esp_camera_fb_get();       //get frame
+        
+        //fps limiter
+		if (settings.fps != 0) {		//fps = 0 means limiter off
+			if (prevfps != settings.fps) {
+				//fps changed
+				prevfps = settings.fps;
+				xLastWakeTime = xTaskGetTickCount ();	//reinit to take effect immediately
+				xFrequency = 1000 / (portTICK_PERIOD_MS * settings.fps);
+				ESP_LOGI(TAG, "FPS changed");
+			}
+			vTaskDelayUntil( &xLastWakeTime, xFrequency );      //actually wait
+		}     
+        
         if (!fb) {
             ESP_LOGE(TAG, "Camera capture failed");
             res = ESP_FAIL;
@@ -445,6 +463,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     else if(!strcmp(variable, "gateway")) settings.gateway.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "dns1")) settings.dns1.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "dns2")) settings.dns2.addr = ipaddr_addr(value);
+    else if(!strcmp(variable, "fps")) settings.fps = val;
     else if(!strcmp(variable, "http_user")) scut(settings.http_user, value, sizeof(settings.http_user));
 	else if(!strcmp(variable, "http_password")) scut(settings.http_password, value, sizeof(settings.http_user));
 	else if(!strcmp(variable, "http_auth")) settings.http_auth = val;
@@ -556,6 +575,7 @@ static esp_err_t status_handler(httpd_req_t *req){
     p+=sprintf(p, "\"gateway\":\"" IPSTR "\",", IP2STR(&settings.gateway));
     p+=sprintf(p, "\"dns1\":\"" IPSTR "\",", IP2STR(&settings.dns1));
     p+=sprintf(p, "\"dns2\":\"" IPSTR "\",", IP2STR(&settings.dns2));
+    p+=sprintf(p, "\"fps\":%u,", settings.fps);
     p+=sprintf(p, "\"http_auth\":%u,", settings.http_auth);
 	p+=sprintf(p, "\"http_user\":\"%s\",", settings.http_user);
 	p+=sprintf(p, "\"http_password\":\"%s\"", settings.http_password);

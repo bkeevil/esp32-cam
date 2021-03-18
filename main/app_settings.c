@@ -21,25 +21,26 @@ static const char* TAG = "settings";
 static const char* NVS_KEY = "settings";
 
 static void log_settings() {
-  ESP_LOGI(TAG," hostname=%s",settings.hostname);
-  ESP_LOGI(TAG," wifi_ssid=%s",settings.wifi_ssid);
-  ESP_LOGI(TAG," wifi_password=%s",settings.wifi_password);
+  ESP_LOGI(TAG, " hostname=%s", settings.hostname);
+  ESP_LOGI(TAG, " wifi_ssid=%s", settings.wifi_ssid);
+  ESP_LOGI(TAG, " wifi_password=%s", settings.wifi_password);
   #ifdef CONFIG_MDNS_ENABLED
-  ESP_LOGI(TAG," mdns_instance=%s",settings.mdns_instance);
+  ESP_LOGI(TAG, " mdns_instance=%s", settings.mdns_instance);
   #endif
   #ifdef CONFIG_SNTP_ENABLED
-  ESP_LOGI(TAG," ntp_server=%s",settings.ntp_server);
-  ESP_LOGI(TAG," timezone=%s",settings.timezone);
+  ESP_LOGI(TAG, " ntp_server=%s",settings.ntp_server);
+  ESP_LOGI(TAG, " timezone=%s",settings.timezone);
   #endif
-  ESP_LOGI(TAG," dhcp=%u",settings.dhcp);
-  ESP_LOGI(TAG," ip="      IPSTR, IP2STR(&settings.ip));
-  ESP_LOGI(TAG," netmask=" IPSTR, IP2STR(&settings.netmask));
-  ESP_LOGI(TAG," gateway=" IPSTR, IP2STR(&settings.gateway));
-  ESP_LOGI(TAG," dns1="    IPSTR, IP2STR(&settings.dns1));
-  ESP_LOGI(TAG," dns2="    IPSTR, IP2STR(&settings.dns2));
-  ESP_LOGI(TAG," auth=%u",settings.http_auth);
-  ESP_LOGI(TAG," http_user=%s",settings.http_user);
-  ESP_LOGI(TAG," http_password=%s",settings.http_password);
+  ESP_LOGI(TAG, " dhcp=%u", settings.dhcp);
+  ESP_LOGI(TAG, " ip="      IPSTR, IP2STR(&settings.ip));
+  ESP_LOGI(TAG, " netmask=" IPSTR, IP2STR(&settings.netmask));
+  ESP_LOGI(TAG, " gateway=" IPSTR, IP2STR(&settings.gateway));
+  ESP_LOGI(TAG, " dns1="    IPSTR, IP2STR(&settings.dns1));
+  ESP_LOGI(TAG, " dns2="    IPSTR, IP2STR(&settings.dns2));
+  ESP_LOGI(TAG, " fps=%u", settings.fps);
+  ESP_LOGI(TAG, " auth=%u", settings.http_auth);
+  ESP_LOGI(TAG, " http_user=%s", settings.http_user);
+  ESP_LOGI(TAG, " http_password=%s", settings.http_password);
 }
 
 void app_settings_reset() {
@@ -63,6 +64,7 @@ void app_settings_reset() {
   scut(settings.timezone, CONFIG_TIMEZONE, (((sizeof(settings.timezone)) >= (sizeof(CONFIG_TIMEZONE))) ? (sizeof(CONFIG_TIMEZONE)) : (sizeof(settings.timezone))));
   #endif
   settings.dhcp = true;
+  settings.fps = 0;
   #ifdef CONFIG_DEF_HTTP_AUTH_ENABLED
   settings.http_auth = true;
   scut(settings.http_user, CONFIG_DEF_HTTP_USER, (((sizeof(settings.http_user)) >= (sizeof(CONFIG_DEF_HTTP_USER))) ? (sizeof(CONFIG_DEF_HTTP_USER)) : (sizeof(settings.http_user))));

@@ -36,6 +36,7 @@ struct app_settings_t {
   char timezone[LEN_TIMEZONE + 1];
   #endif
   bool dhcp;
+  uint8_t fps;
   bool http_auth;
   char http_user[LEN_HTTP_USER + 1];
   char http_password[LEN_HTTP_PASSWORD + 1];

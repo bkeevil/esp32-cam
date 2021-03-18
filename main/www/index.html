@@ -44,6 +44,13 @@
                                 <option value="0">96x96(96x96)</option>
                             </select>
                         </div>
+                        <div class="input-group" id="fps-group">
+                            <label for="fps">Framerate</label>
+                            <output name="fps_out" id="fps_out" for="fps">0</output>
+                            <div class="range-min">0</div>
+                            <input type="range" id="fps" min="0" max="30" value="0" oninput="fps_out.value=fps.value" class="default-action">
+                            <div class="range-max">30</div>
+                        </div>
                         <div class="input-group" id="quality-group">
                             <label for="quality">Quality</label>
                             <output name="quality_out" id="quality_out" for="quality">10</output>
