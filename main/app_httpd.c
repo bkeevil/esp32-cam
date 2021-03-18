@@ -14,6 +14,7 @@
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "app_settings.h"
+#include "scut.h"
 #ifdef CONFIG_SNTP_ENABLED
 #include <time.h>
 #include <sys/time.h>
@@ -349,7 +350,6 @@ static void urldecode2(char *dst, const char *src)      //https://stackoverflow.
 }
 
 
-
 static esp_err_t cmd_handler(httpd_req_t *req){
     char*  buf;
     size_t buf_len;
@@ -429,24 +429,24 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     #ifdef CONFIG_LED_ILLUMINATOR_ENABLED
     else if(!strcmp(variable, "led_intensity")) { led_duty = val; if (isStreaming) app_illuminator_set_led_intensity(led_duty); }
     #endif
-    else if(!strcmp(variable, "hostname")) strncpy(settings.hostname, value, sizeof(settings.hostname));
-    else if(!strcmp(variable, "wifi_ssid")) strncpy(settings.wifi_ssid, value, sizeof(settings.wifi_ssid));
-    else if(!strcmp(variable, "wifi_password")) strncpy(settings.wifi_password, value, sizeof(settings.wifi_password));
+    else if(!strcmp(variable, "hostname")) scut(settings.hostname, value, sizeof(settings.hostname));      //strncpy(settings.hostname, value, sizeof(settings.hostname));
+    else if(!strcmp(variable, "wifi_ssid")) scut(settings.wifi_ssid, value, sizeof(settings.wifi_ssid));
+    else if(!strcmp(variable, "wifi_password")) scut(settings.wifi_password, value, sizeof(settings.wifi_password));
     #ifdef CONFIG_MDNS_ENABLED
-    else if(!strcmp(variable, "mdns_instance")) strncpy(settings.mdns_instance, value, sizeof(settings.mdns_instance));
+    else if(!strcmp(variable, "mdns_instance")) scut(settings.mdns_instance, value, sizeof(settings.mdns_instance));
     #endif
     else if(!strcmp(variable, "dhcp")) settings.dhcp = val;
     #ifdef CONFIG_SNTP_ENABLED
-    else if(!strcmp(variable, "ntp_server")) strncpy(settings.ntp_server, value, sizeof(settings.ntp_server));
-    else if(!strcmp(variable, "timezone")) { strncpy(settings.timezone, value, sizeof(settings.timezone)); setenv("TZ", settings.timezone, 1); tzset(); }
+    else if(!strcmp(variable, "ntp_server")) scut(settings.ntp_server, value, sizeof(settings.ntp_server));
+    else if(!strcmp(variable, "timezone")) { scut(settings.timezone, value, sizeof(settings.timezone)); setenv("TZ", settings.timezone, 1); tzset(); }
     #endif
     else if(!strcmp(variable, "ip")) settings.ip.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "netmask")) settings.netmask.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "gateway")) settings.gateway.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "dns1")) settings.dns1.addr = ipaddr_addr(value);
     else if(!strcmp(variable, "dns2")) settings.dns2.addr = ipaddr_addr(value);
-    else if(!strcmp(variable, "http_user")) strncpy(settings.http_user, value, sizeof(settings.http_user));
-	else if(!strcmp(variable, "http_password")) strncpy(settings.http_password, value, sizeof(settings.http_user));
+    else if(!strcmp(variable, "http_user")) scut(settings.http_user, value, sizeof(settings.http_user));
+	else if(!strcmp(variable, "http_password")) scut(settings.http_password, value, sizeof(settings.http_user));
 	else if(!strcmp(variable, "http_auth")) settings.http_auth = val;
     else {
       res = -1;

@@ -15,6 +15,7 @@
 #endif
 //#include "ssd1306.h"
 #include "app_settings.h"
+#include "scut.h"
 
 static const char* TAG = "settings";
 static const char* NVS_KEY = "settings";
@@ -51,7 +52,7 @@ void app_settings_reset() {
   }
   ESP_LOGI(TAG,"Restoring default settings");
   memset(&settings,0,sizeof(settings));
-  strncpy(settings.wifi_ssid, CONFIG_ESP_WIFI_SSID, sizeof(settings.wifi_ssid));
+  scut(settings.wifi_ssid, CONFIG_ESP_WIFI_SSID, (((sizeof(settings.wifi_ssid)) >= (strlen(CONFIG_ESP_WIFI_SSID))) ? (strlen(CONFIG_ESP_WIFI_SSID)) : (sizeof(settings.wifi_ssid)))     );
   strncpy(settings.wifi_password, CONFIG_ESP_WIFI_PASSWORD, sizeof(settings.wifi_password));
   strncpy(settings.hostname, CONFIG_LWIP_LOCAL_HOSTNAME, sizeof(settings.hostname));
   #ifdef CONFIG_MDNS_ENABLED
