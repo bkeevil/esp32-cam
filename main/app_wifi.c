@@ -99,9 +99,9 @@ void wifi_init_softap()
     }
     wifi_config_t wifi_config;
     memset(&wifi_config, 0, sizeof(wifi_config_t));
-    strncpy((char*)wifi_config.ap.ssid, CONFIG_ESP_WIFI_AP_SSID, sizeof(wifi_config.ap.ssid));     // whhhyy??? snprintf((char*)wifi_config.ap.ssid, 32, "%s", CONFIG_ESP_WIFI_AP_SSID);
-    //not needed wifi_config.ap.ssid_len = strlen((char*)wifi_config.ap.ssid);
-    strncpy((char*)wifi_config.ap.password, CONFIG_ESP_WIFI_AP_PASSWORD, sizeof(wifi_config.ap.password)); //why ???snprintf((char*)wifi_config.ap.password, 64, "%s", CONFIG_ESP_WIFI_AP_PASSWORD);
+    snprintf((char*)wifi_config.ap.ssid, 32, "%s", CONFIG_ESP_WIFI_AP_SSID);
+    wifi_config.ap.ssid_len = strlen((char*)wifi_config.ap.ssid);
+    snprintf((char*)wifi_config.ap.password, 64, "%s", CONFIG_ESP_WIFI_AP_PASSWORD);
     wifi_config.ap.max_connection = 1;
     wifi_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
     if (strlen(CONFIG_ESP_WIFI_AP_PASSWORD) == 0) {
@@ -121,8 +121,6 @@ static void wifi_init_sta(void) {
     snprintf((char*)wifi_config.sta.password, 64, "%s", settings.wifi_password);
     ESP_LOGI(TAG, "Connecting to AP SSID:%s password:%s",
         wifi_config.sta.ssid, wifi_config.sta.password);
-        
-    wifi_config.sta.scan_method = WIFI_ALL_CHANNEL_SCAN;
 
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
 
@@ -219,7 +217,7 @@ void app_wifi_startup() {
     wifi_country_t wifi_country = {
         .cc = "",
         .schan = 1,
-        .nchan = 13,
+        .nchan = 11,
         .max_tx_power = 78,
         .policy = WIFI_COUNTRY_POLICY_AUTO
     };
