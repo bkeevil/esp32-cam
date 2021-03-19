@@ -1,4 +1,22 @@
-# ESP32-CAM
+# ESP32-CAM-BGR
+... based on [bkeevil/esp32-cam](https://github.com/bkeevil/esp32-cam)
+
+## Features fixed / added
+
+* added basic http authentication
+  * you can set deafault username / password using menuconfig
+  * it is possible to disable auth completely
+  * stream url is <ip-of-your-camera>:81/stream-<password> when auth is on, there is no auth on the stream itself
+* added fps limiter (default off)
+  * can be used to reduce CPU load / heat
+* fixed resolution switcher - new driver added new resolutions and there was mistmach
+* "Reboot Camera" button delay the refresh of the page by 10 secponds), this gives ESP some time to reboot - otherwise the page cant refresh
+
+## Notes
+
+* to enable PSRAM correctly according to current implementation of the camera driver go to Component config -> ESP32 specific -> SPI RAM config -> SPI RAM ACCESS METHOD -> using heap_caps_malloc
+
+# ORIGINAL README of ESP32-CAM by bkeevil
 
 The goal of this project is to create a functional webcam firmware for ESP32 based camera boards with OV2640 modules using the ESP-IDF framework. Such modules often come with optional components like high power LED "flash", an OLED display, or a motion detector. This project will incorporate compile time support for optional libraries to support these components.
 
