@@ -10,7 +10,7 @@
 * added fps limiter (default off)
   * can be used to reduce CPU load / heat
 * fixed resolution switcher - new driver added new resolutions and there was mistmach
-* "Reboot Camera" button delay the refresh of the page by 10 secponds), this gives ESP some time to reboot - otherwise the page cant refresh
+* "Reboot Camera" button delay the refresh of the page by 10 secponds), this gives ESP some time to reboot - otherwise the page can't refresh correctly
 
 ## Notes
 
