@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(event) {
     var baseHost = document.location.origin
-    var streamUrl = baseHost + ':81'
+    var streamUrlbase = baseHost + ':81/stream'
+    var streamUrl = streamUrlbase
 
     const framesize = document.getElementById('framesize')
     const ledGroup = document.getElementById('led-group')
@@ -29,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const view = document.getElementById('stream')
     const viewContainer = document.getElementById('stream-container')
     const streamWindowLink = document.getElementById('stream-window-link')
+    const http_auth = document.getElementById('http_auth')
+    const http_password = document.getElementById('http_password-group')
+    const http_user = document.getElementById('http_user-group')
 
     function hide(el) {
         el.classList.add('hidden')
@@ -54,11 +58,23 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     function startStream() {
-        console.log("Starting Stream")
-        view.src = `${streamUrl}/stream`
+  //      var surl = `${streamUrl}/stream` 
+  //      if (state.http_auth == 1) {
+  //    //add username and password when auth enabled
+  //  	   surl = surl.replace("://", "://" + state.http_user + ":" + state.http_password + "@")
+  //      }
+        
+        console.log("Starting Stream: " + `${streamUrl}`)
+        
+        view.src = `${streamUrl}`
+        
         show(view)
         show(viewContainer)
         streamButton.innerHTML = 'Stop Stream'
+    }
+     
+    function refreshme() {
+	    window.location.reload(true);
     }
 
     function rebootCamera() {
@@ -67,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
             .then(response => {
                 console.log(`request to ${query} finished, status: ${response.status}`)
                 if (response.status == 200)
-                //Reload the page and ignore the browser cache.
-                    window.location.reload(true);
+                    //Reload the page and ignore the browser cache after 5seconds
+                    setTimeout(refreshme, 10000)
             })
     }
 
@@ -94,6 +110,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
                         updateValue(el, state[el.id], false)
                     })
                 document.title = state.hostname
+                
+                
+                
                 var pageTitle = document.getElementById("page-title")
                 if (pageTitle) {
                     pageTitle.innerHTML = state.hostname
@@ -105,6 +124,17 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     hide(ntpServer)
                     hide(timezone)
                 }
+                
+
+		        if (state.http_auth == 1) {
+			        //add username and password when auth enabled
+	  		        streamUrl = `${streamUrlbase}` + '-' + state.http_password 
+	  		        streamWindowLink.href = `${streamUrlbase}` + '-' + state.http_password 
+		        } else {
+		            streamUrl = `${streamUrlbase}`
+ 		            streamWindowLink.href = `${streamUrlbase}`
+ 		        }
+                
                 // Update the LED intensity slider max-value together with the related label
                 if (state.led_intensity !== -1 && state.led_max_intensity) {
                     let led_intensity_slider = document.getElementById("led_intensity");
@@ -112,6 +142,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     let led_intensity_range_max = document.querySelector('#led-group > div.range-max');
                     led_intensity_range_max.innerText = state.led_max_intensity;
                 }
+                
+                document.getElementById("fps_out").value = state.fps
+                document.getElementById("quality_out").value = state.quality
+                document.getElementById("brightness_out").value = state.brightness
+                document.getElementById("contrast_out").value = state.contrast
+                document.getElementById("saturation_out").value = state.saturation
+                document.getElementById("led_intensity_out").value = state.led_intensity
+                document.getElementById("ae_level_out").value = state.ae_level
+                document.getElementById("aec_value_out").value = state.aec_value
+                document.getElementById("agc_gain_out").value = state.agc_gain
+                document.getElementById("gainceiling_out").value = state.gainceiling
+                
             })
     }
 
@@ -169,7 +211,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     show(dns1)
                     show(dns2)
                 }
-            }
+            } else if(el.id == "http_auth"){
+	            if (value) {
+		            show(http_user)
+		            show(http_password)
+	            } else {
+		            hide(http_user)
+		            hide(http_password)
+	            }
+            } 
         }
     }
 
@@ -183,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             case 'text':
             case 'password':
             case 'select-one':
-                value = el.value
+                value = encodeURIComponent(el.value)
                 break
             case 'button':
             case 'submit':
@@ -290,6 +340,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     dhcp.onchange = () => {
+        updateConfig(dhcp)
         if (dhcp.checked) {
             hide(ip)
             hide(netmask)
@@ -305,6 +356,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
         }
     }
 
+
+    http_auth.onchange = () => {
+        updateConfig(http_auth)
+        if (http_auth.checked) {
+            show(http_user)
+		    show(http_password)
+        } else {
+		    hide(http_user)
+		    hide(http_password)
+        }
+    }
+
     document
         .querySelectorAll('.close')
         .forEach(el => {
@@ -313,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             }
         })
 
-    streamWindowLink.href = `${streamUrl}/stream`
+    streamWindowLink.href = `${streamUrlbase}`
     fetchSettings()
-    startStream()
+    setTimeout(() => { startStream() ; }, 2000)
 })

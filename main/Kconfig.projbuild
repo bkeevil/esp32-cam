@@ -45,6 +45,26 @@ config LWIP_LOCAL_HOSTNAME
 
 endmenu
 
+menu "Authentication"
+	config DEF_HTTP_AUTH_ENABLED
+		bool "Authentication required"
+		default y
+		help
+		Enable or disable authentication
+
+	config DEF_HTTP_USER
+		string "Username"
+		default "buger"
+		help
+		Username for authentication - max 15 characters
+
+	config DEF_HTTP_PASSWORD
+		string "Password"
+		default "wannaSEE"
+		help
+		Password for authentication - max 15 characters
+endmenu
+
 menu "mDNS Settings"
     config MDNS_ENABLED
         bool "mDNS Enabled"

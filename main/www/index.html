@@ -28,16 +28,28 @@
                         <div class="input-group" id="framesize-group">
                             <label for="framesize">Resolution</label>
                             <select id="framesize" class="default-action">  
-                                <option value="10">UXGA(1600x1200)</option>
-                                <option value="9">SXGA(1280x1024)</option>
-                                <option value="8">XGA(1024x768)</option>
-                                <option value="7">SVGA(800x600)</option>
-                                <option value="6">VGA(640x480)</option>
-                                <option value="5" selected="selected">CIF(400x296)</option>
-                                <option value="4">QVGA(320x240)</option>
+                                <option value="13">UXGA(1600x1200)</option>
+                                <option value="12">SXGA(1280x1024)</option>
+                                <option value="11">HD(1280x720)</option>
+                                <option value="10">XGA(1024x768)</option>
+                                <option value="9">SVGA(800x600)</option>
+                                <option value="8">VGA(640x480)</option>
+                                <option value="7">HVGA(480x320)</option>
+                                <option value="6" selected="selected">CIF(400x296)</option>
+                                <option value="5">QVGA(320x240)</option>
+                                <option value="4">240x240(240x240)</option>
                                 <option value="3">HQVGA(240x176)</option>
-                                <option value="0">QQVGA(160x120)</option>
+                                <option value="2">QCIF(176x144)</option>
+                                <option value="1">QQVGA(160x120)</option>
+                                <option value="0">96x96(96x96)</option>
                             </select>
+                        </div>
+                        <div class="input-group" id="fps-group">
+                            <label for="fps">Framerate</label>
+                            <output name="fps_out" id="fps_out" for="fps">0</output>
+                            <div class="range-min">0</div>
+                            <input type="range" id="fps" min="0" max="30" value="0" oninput="fps_out.value=fps.value" class="default-action">
+                            <div class="range-max">30</div>
                         </div>
                         <div class="input-group" id="quality-group">
                             <label for="quality">Quality</label>
@@ -114,11 +126,26 @@
                         </div>
                         <div class="input-group" id="wifi-ssid-group">
                             <label for="wifi_ssid">Access Point</label>
-                            <input type="text" id="wifi_ssid" maxlength="64" class="default-action">
+                            <input type="text" id="wifi_ssid" maxlength="31" class="default-action">
                         </div>
                         <div class="input-group" id="wifi-password-group">
-                            <label for="wifi_password">Password</label>
-                            <input type="password" id="wifi_password" maxlength="64" class="default-action">
+                            <label for="wifi_password">WiFi Password</label>
+                            <input type="password" id="wifi_password" maxlength="63" class="default-action">
+                        </div>
+                        <div class="input-group" id="http_auth-group">
+                            <label for="http_auth">Authentication</label>
+                            <div class="switch">
+                                <input id="http_auth" type="checkbox" class="default-action">
+                                <label class="slider" for="http_auth"></label>
+                            </div>
+                        </div>
+                        <div class="input-group" id="http_user-group">
+                            <label for="http_user">Username</label>
+                            <input type="text" id="http_user" maxlength="15" class="default-action">
+                        </div>
+                        <div class="input-group" id="http_password-group">
+                            <label for="http_password">Password</label>
+                            <input type="password" id="http_password" maxlength="15" class="default-action">
                         </div>
                         <div class="input-group" id="mdns-instance-group">
                             <label for="mdns_instance">mDNS Instance Name</label>

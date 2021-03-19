@@ -1,0 +1,8 @@
+to make "allocate in psram" work go to Component config -> ESP32 specific -> SPI ram config -> SPI RAM ACCESS METHOD -> using heap_caps_malloc
+
+
+dhcp hostame is too long ! :D
+po zadani retezce ve web ui a kliknuti na save se neulozi posledni ve kterem je prave focus pokud byl zmenen
+mezera v user passwordu udela bordel 
+
+

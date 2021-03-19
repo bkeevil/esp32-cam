@@ -9,9 +9,12 @@
 #include <esp_netif.h>
 #endif
 
-#define LEN_WIFI_SSID     32
-#define LEN_WIFI_PASSWORD 64
+//lengths in characters WO null term
+#define LEN_WIFI_SSID     31
+#define LEN_WIFI_PASSWORD 63
 #define LEN_HOSTNAME      32
+#define LEN_HTTP_USER	  16
+#define LEN_HTTP_PASSWORD 16
 #ifdef CONFIG_MDNS_ENABLED
 #define LEN_MDNS_INSTANCE 32
 #endif
@@ -22,17 +25,21 @@
 
 struct app_settings_t {
   int size;
-  char wifi_ssid[LEN_WIFI_SSID];
-  char wifi_password[LEN_WIFI_PASSWORD];
-  char hostname[LEN_HOSTNAME];
+  char wifi_ssid[LEN_WIFI_SSID + 1];
+  char wifi_password[LEN_WIFI_PASSWORD + 1];
+  char hostname[LEN_HOSTNAME + 1];
   #ifdef CONFIG_MDNS_ENABLED
-  char mdns_instance[LEN_MDNS_INSTANCE];
+  char mdns_instance[LEN_MDNS_INSTANCE + 1];
   #endif
   #ifdef CONFIG_SNTP_ENABLED
-  char ntp_server[LEN_NTP_SERVER];
-  char timezone[LEN_TIMEZONE];
+  char ntp_server[LEN_NTP_SERVER + 1];
+  char timezone[LEN_TIMEZONE + 1];
   #endif
   bool dhcp;
+  uint8_t fps;
+  bool http_auth;
+  char http_user[LEN_HTTP_USER + 1];
+  char http_password[LEN_HTTP_PASSWORD + 1];
 #if defined(__USE_LWIP_IP_4_ADDR)
   ip4_addr_t ip;
   ip4_addr_t netmask;
