@@ -14,15 +14,11 @@ This project was originally forked from one of the example programs for the ESP-
 * An mDNS server to announce camera services to the local network
 * Implement the NTP client and RTC for date/time
 
-The current roadmap involves finishing testing of the features above and creating an initial release before moving on to some planned new features:
-
-* A basic font library for the lcd and image overlays
-* Playback of image on LCD screen
-* A basic motion detection library [See this](https://eloquentarduino.github.io/2020/01/motion-detection-with-esp32-cam-only-arduino-version/) [and this](https://github.com/alanesq/CameraWifiMotion)
-* Record and playback from an SD card
-* Basic ONVIF support MJPEG streams only.
-
 The resources available on the ESP32 to support cameras are very limited and users should not expect to see anything like the full resolutions and frame rates the OV2640 is capable of.
+
+## Status
+
+I am no longer actively maintaining this project but continue to process pull requests. If anyone is enthusiastic about taking over this project then please contact me at me@bondkeevil.ca
 
 ## License
 
